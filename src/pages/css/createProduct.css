@@ -1,0 +1,82 @@
+.container-principal-create-product{
+    min-height: 95vh;
+    background-color: rgb(245, 240, 241);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-go-to-products-create-products{
+    text-align: center;
+    padding: 10px;
+}
+.nav-go-to-products-create-products a{
+    text-decoration: none;
+    color: #000;
+    font-size: 1.5rem;
+}
+
+
+
+.container-main-form-create-product{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+}
+.box-title-form-create h2{
+    font-size: 3rem;
+    text-align: center;
+}
+
+.container-form-create-product{
+    width: 100%;
+    background-color: rgb(203, 207, 206);
+    padding: 10px 30px 10px 30px;
+    border-radius: 5px;
+}
+
+.container-form-create-product div{
+    margin-top: 10px;
+}
+
+.container-form-create-product div > *{
+    display: block;
+    width: 100%;
+}
+
+.select-category{
+    padding: 10px;
+}
+
+.container-form-create-product label{
+    height: max-content;
+    font-size: 2rem;
+}
+
+.container-form-create-product input{
+    padding: 5px;
+    border-radius: 2px;
+    outline: none;
+    border: solid 1px;
+    height: 5vh;
+    font-size: 1.5rem;
+    font-weight:lighter;
+}
+
+.load-image-content{
+    background-color: rgb(234, 237, 237);
+    height: 5vh;
+}
+
+.container-form-create-product button{
+    padding: 10px;
+    font-weight: bold;
+}
+
+.container-form-create-product textarea{
+    resize: none;
+    padding: 5px;
+}

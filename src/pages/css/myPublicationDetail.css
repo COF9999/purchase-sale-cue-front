@@ -1,0 +1,135 @@
+.container-detail-myPublication{
+    background-color: rgb(202, 202, 217);
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    min-height: 95vh;
+    display: flex;
+    flex-direction: column;
+}
+
+
+.container-img-myPublication{
+    display: flex;
+    height: 50%;
+    background-color:rgb(250, 249, 248);
+    height: max-content;
+}
+.content-render-img-myPublication{
+    background-color: rgb(228, 230, 228);
+    width: 40%;
+    padding: 10px;
+    display: flex;
+}
+
+.content-render-img-myPublication .box-description-publication{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+.box-image-myPublication {
+    display: flex;
+    justify-content: center;
+    
+}
+
+.box-name-product-myPublication{
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+.box-image-detail-myPublication{
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.box-image-myPublication img{
+    height: 350px;
+    width: 300px;
+    border-radius: 5px;
+}
+
+.content-render-offer-myPublication{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 30px;
+}
+
+.content-render-offer-myPublication .box-offer{
+    background-color: rgba(200, 216, 210, 0.133);
+    padding: 10px;
+}
+
+.content-render-offer-myPublication .box-offer div{
+   text-align: center;
+   width: 100%;
+   padding: 10px;
+}
+
+.content-render-offer-myPublication .box-info-offer{
+    /* background-color: aquamarine; */
+    width: 30%;
+}
+
+.content-render-offer-myPublication .box-info-offer div{
+    text-align: center;
+    padding: 10px;
+    font-size: 1.5rem;
+}
+.container-information-myPublication{
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    row-gap: 30px;
+    padding: 20px;
+    align-items: center;
+}
+.container-all-info-myPublication{
+    background-color: rgb(211, 218, 113);
+    width: max-content;
+    padding: 10px;
+    border-radius: 20px;
+    display: flex;
+    transition: .3s ease;
+}
+
+.container-all-info-myPublication:hover{
+    transform: translateY(-5px);
+}
+
+
+.container-all-info-myPublication .card-offer-my-publication{
+    text-align: center;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+}
+
+.container-all-info-myPublication .card-offer-my-publication div{
+    display: flex;
+    flex-direction: column;
+    max-width: 200px;
+}
+
+.accept-offer{
+    color: rgb(2, 144, 2);
+    cursor: pointer;
+}
+
+
+
+.deny-offer{
+    color: rgb(211, 6, 6);
+    cursor: pointer;
+}
+

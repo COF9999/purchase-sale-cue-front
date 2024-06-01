@@ -1,0 +1,92 @@
+.container-primary-myPublications{
+    background-color:rgb(244, 244, 236);
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 95vh;
+}
+
+.container-filter-myPublications{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    padding: 10px;
+    background-color: chocolate;
+}
+
+.container-filter-myPublications div{
+    height: 10%;
+    background-color: rgb(0, 255, 98);
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: max-content;
+}
+
+.container-principal-list-myPublications{
+    width: 100%;
+}
+
+.container-list-myPublications{
+    padding: 10px;
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    overflow-y: auto;
+    column-gap: 10px;
+    row-gap: 30px;
+    justify-content: space-around;
+}
+
+.box-card-myPublications{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    max-width: 300px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+}
+
+.box-card-myPublications div{
+    padding: 10px;
+}
+
+.status-my-publication{
+    text-align: center;
+    font-weight: bold;
+}
+
+.green-publication{
+    color: rgb(11, 209, 4);
+}
+
+.blue-publication{
+    color: blue;
+}
+
+.box-inner{
+    display: flex;
+    justify-content: center;
+}
+
+.box-inner img{
+    width: 250px;
+    height: 250px;
+}
+
+@media (max-width: 1200px) {
+    .container-list-myPublications{
+        grid-template-columns: auto auto;
+        row-gap: 75px;
+    }
+}
+
+@media (max-width: 640px) {
+    .container-list-myPublications{
+        grid-template-columns: auto;
+    }
+}

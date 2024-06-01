@@ -1,0 +1,51 @@
+.App {
+    text-align: center;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+  
+.App-header {
+background-color: #282c34;
+padding: 20px;
+color: white;
+min-height: 10vh;
+}
+
+.App-header > *{
+    color: white;
+}
+
+
+main {
+text-align: left;
+margin: 0 auto;
+max-width: 800px;
+min-height: 80vh;
+}
+
+h1, h2 {
+color: #333;
+}
+
+ul {
+margin-left: 20px;
+}
+
+li {
+margin-bottom: 10px;
+}
+
+a {
+color: #61dafb;
+text-decoration: none;
+}
+
+a:hover {
+text-decoration: underline;
+}
+
+footer {
+background-color: #282c34;
+color: white;
+min-height: 10vh;
+}

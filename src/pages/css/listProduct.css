@@ -1,0 +1,78 @@
+.container-primary-products{
+    background-color:#F4F4EC;
+    display: flex;
+    font-family: Arial, Helvetica, sans-serif;
+    min-height: 95vh;
+}
+
+.container-filter-products{
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    height: max-content;
+    padding: 10px;
+    background-color: chocolate;
+}
+
+.container-filter-products div{
+    height: 10%;
+    background-color: rgb(140, 0, 255);
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-principal-list-products{
+    width: 100%;
+}
+
+.container-div-link-to-create-products{
+    text-align: center;
+    padding: 10px;
+}
+
+.container-div-link-to-create-products a{
+    text-decoration: none;
+    font-size: 1rem;
+    color: #000;
+}
+.container-list-products{
+    padding: 10px;
+    flex: 1;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    overflow-y: auto;
+    column-gap: 10px;
+    row-gap: 30px;
+    justify-content: space-around;
+}
+
+.box-card-product{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #FFFFFF;
+    max-width: 300px;
+    border-radius: 5px;
+}
+
+
+
+.box-card-product div{
+    padding: 10px;
+}
+
+.box-inner{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+
+
+.box-card-product .box-inner img{
+    width: 250px;
+    height: 250px;
+}

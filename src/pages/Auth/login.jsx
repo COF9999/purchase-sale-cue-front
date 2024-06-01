@@ -1,0 +1,94 @@
+import React, { useState, useContext, createContext, useRef } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../AuthProvider';// Asegúrate de ajustar la ruta de importación
+import '../css/login.css'
+
+export const LoginContext = createContext()
+
+export const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const {login} = useContext(AuthContext);
+  const {usernameContext} = useContext(AuthContext)
+  const navigate = useNavigate();
+  const usernameRef = useRef()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // Envía los datos del formulario al servidor para iniciar sesión
+      const response = await axios.post('http://localhost:8080/user/auth', {
+        "identification":username,
+        password,
+      });
+
+      // Si el inicio de sesión es exitoso, guarda el token JWT y establece isAuth en true
+      if (response.status === 200 && response.data.authenticationResponseDTO.token) {
+        const nameUsername = response.data.users.username
+        usernameContext(nameUsername)
+        localStorage.setItem("username",nameUsername)
+        login(response.data.authenticationResponseDTO.token); // Guarda el token JWT en el contexto de autenticación
+        navigate('/publications'); // Redirige al usuario a la página de publicaciones
+      } else {
+        // Si hay un error en el servidor, muestra un mensaje de error
+        alert('Error al iniciar sesión');
+      }
+    } catch (error) {
+      // Si hay un error de red o cualquier otro error, muestra un mensaje de error
+      alert('Error del servidor');
+      console.error(error);
+    }
+  };
+
+  return (
+    <div className='container-login'>
+      <div className='box-information'>
+        <div className='div-out-logo-cue'>
+          <div className='div-logo-cue'>
+             <img src="src/images/logo-cue.png" alt="" />
+          </div>
+        </div>
+        <div className='div-welcome'>
+          <div>
+              <h1>Bienvido</h1>
+              <h2>CUE THINGS</h2>
+          </div>
+        </div>
+      </div>
+      <div className='box-login'>
+      <form onSubmit={handleSubmit} className='login-form'>
+        <div>
+          <h2>Login</h2>
+        </div>
+        <div>
+          <label htmlFor="username">Usuario:</label>
+          <input
+            type="text"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+        </div>
+        <div className='div-btn-submit-login'>
+          <button type="submit">Iniciar Sesión</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  );
+};
+
+
