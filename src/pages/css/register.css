@@ -37,12 +37,12 @@
 }
 
 .register-form div input{
-    height: 25px;
+    height: 30px;
     border-radius: 2px;
     outline: none;
     border: none;
-    padding: 5px;
     background-color: rgb(234, 229, 223);
+    padding: 10px;
 }
 
 .register-form div > *{

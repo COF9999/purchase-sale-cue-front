@@ -14,9 +14,10 @@ import { ContainerProduct } from './pages/ProductFolder/RootProduct.jsx';
 import { CreateProduct } from './pages/ProductFolder/CreateProduct.jsx';
 import { Product } from './pages/ProductFolder/Products.jsx';
 import { Offer } from './pages/OfferFolder/Offer.jsx';
+import { Transaction } from './pages/TransactionFolder/Transaction.jsx';
 import { StaticGreenPage } from './pages/greenPage.jsx';
 import { Profile } from './pages/MyProfile/MyProfile.jsx';
-import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import {ProtectedRoute} from './pages/ProtectedRoute.jsx';
 import { AuthProvider } from './pages/AuthProvider.jsx';
 
 const router = createBrowserRouter([
@@ -85,6 +86,11 @@ const router = createBrowserRouter([
       {
         path: '/offer',
         element: <Offer></Offer>
+      },
+      
+      {
+        path: '/transacciones',
+        element: <Transaction></Transaction>
       }
     ]
   }

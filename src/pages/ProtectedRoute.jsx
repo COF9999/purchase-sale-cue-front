@@ -54,6 +54,7 @@ function NavHeaderBody ({navHeaderBody}){
         return
     }
 
+
     return(
              <div
                     className="div-menu-resize"
@@ -76,11 +77,11 @@ function NavHeaderBody ({navHeaderBody}){
                    
                    <div className="div-link-redirection">
                          <Link to="/green-page">Economia circular</Link>
-                   </div>        
+                   </div>    
                 </div>
     )
 }
-export default function ProtectedRoute(){
+export function ProtectedRoute(){
     const { isAuth } = useContext(AuthContext);
     const { logout } = useContext(AuthContext);
     const {username} = useContext(AuthContext)

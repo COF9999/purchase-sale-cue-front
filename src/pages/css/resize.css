@@ -18,8 +18,11 @@
 
 .div-menu-resize{
     position: absolute;
-    background-color: rgb(229, 222, 222);
+    background-color: rgb(240, 235, 235);
     display: block;
+    z-index: 150;
+    text-align: left;
+    width: 30%;
 }
 
 .div-link-redirection{

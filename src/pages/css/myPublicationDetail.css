@@ -9,7 +9,7 @@
 
 .container-img-myPublication{
     display: flex;
-    height: 50%;
+    height: max-content;
     background-color:rgb(250, 249, 248);
     height: max-content;
 }
@@ -30,6 +30,11 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
+
+.content-render-img-myPublication .box-description-publication div{
+    text-align: center;
+}
+
 .box-image-myPublication {
     display: flex;
     justify-content: center;
@@ -99,6 +104,9 @@
     border-radius: 20px;
     display: flex;
     transition: .3s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .container-all-info-myPublication:hover{
@@ -133,3 +141,136 @@
     cursor: pointer;
 }
 
+.counter-offer{
+    color: rgb(88, 6, 211);
+    cursor: pointer;
+}
+
+
+.flex-box-counter-offer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+}
+
+.card-counter-offer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.title-detail-counter-offer{
+    text-align: center;
+    padding-bottom: 20px;
+}
+
+.div-content-detail-counter-offer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 400px;
+    padding: 30px;
+    background-color: aliceblue;
+    border-radius: 5px;
+    row-gap: 10px;
+}
+
+.div-content-detail-counter-offer div{
+    text-align: center;
+    max-width: 200px;
+}
+
+.div-counter-offer-icon{
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+}
+
+.div-counter-offer-icon div{
+    font-size: 30px;
+}
+
+.overlay-message-counter-offer{
+    width: 100%;
+    background-color: rgba(176, 173, 173, 0.581);
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    z-index: 200;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.div-content-counter-offer{
+    position: relative;
+    background-color: rgb(21, 188, 221);
+    padding: 35px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+}
+
+.div-content-counter-offer > *{
+    text-align: center
+}
+
+.div-content-counter-offer button{
+    padding: 10px;
+}
+
+.div-content-counter-offer textarea{
+    resize: none;
+    border: 1px rgba(0, 123, 255, 0.733) solid;
+    padding: 10px;
+}
+
+
+.div-content-counter-offer .close-counter-offer{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.div-content-counter-offer .close-counter-offer img{
+    width: 20px;
+}
+@media (max-width:1280px) {
+    .container-img-myPublication{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .content-render-img-myPublication{
+        width: 100vw;
+    }
+}
+
+
+@media (max-width:1100px) {
+    .container-all-info-myPublication .card-offer-my-publication{
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+    }
+}
+
+@media (max-width:640px) {
+    .content-render-img-myPublication{
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+
+    }
+
+    
+}

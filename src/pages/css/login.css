@@ -39,7 +39,15 @@
 .div-welcome div{
     padding: 30px;
     transform: translateY(-50%);
+    text-align: center;
+   
 }
+
+.div-welcome div > *{
+    color: #f0f0f0;
+    font-size: 4rem;
+}
+
 
 .box-information .div-logo-cue img{
     width: 100px;
@@ -99,4 +107,11 @@
     height: 30px;
     border: none;
     outline: none;
+}
+
+
+@media (max-width: 1000px){
+    .box-information{
+        width: 50%;
+    }
 }

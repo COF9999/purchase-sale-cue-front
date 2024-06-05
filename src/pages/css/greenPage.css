@@ -44,8 +44,18 @@ a:hover {
 text-decoration: underline;
 }
 
+
+
 footer {
 background-color: #282c34;
 color: white;
 min-height: 10vh;
 }
+
+
+@media (max-width: 980px){
+    .recicle-img{
+        width: 100%;
+    }
+}
+

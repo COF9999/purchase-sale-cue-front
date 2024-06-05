@@ -3,6 +3,71 @@ import { useState,useEffect,useRef } from "react"
 import "../css/myPublicationDetail.css"
 import axios from "axios"
 import imgBook from "../../images/img-book.jpeg"
+import iconCloseCommet from "../../images/icon-close-512.webp"
+
+
+
+
+function OverlayCounterOffer({activeOverlayCounter,setActiveOverlayCounter,idOfferRef}){
+
+    const textAreaRef = useRef()
+
+    if(activeOverlayCounter==false){
+        return
+    }
+
+    const deactiveCounterOffer = () =>{
+        setActiveOverlayCounter(false)
+    }
+
+
+    const launchCounterOffer = async() =>{
+    
+        if(textAreaRef.current.value === ""){
+            alert("Llena el campo de la contra-oferta")
+        }
+        const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
+        try{
+            let body = {
+                "idOffer":idOfferRef.current,
+                "description": textAreaRef.current.value,
+                "tokenDto":{
+                    "token": token()
+                }
+            }
+            const response = await axios.post(`http://localhost:8080/counter-offer/`,body)
+            if(response.status === 200){
+                console.log(response.data);
+                alert("Contra-oferta exitosa")
+            }else{
+                alert(e)
+                console.log(e);
+                console.log("BAD RETURN OFF SERVER TRANSACTION");
+            }
+        }catch(error){
+            console.log(error);
+        }
+    }
+
+    return(
+    <div className="overlay-message-counter-offer">
+        <div className="div-content-counter-offer">
+            <div>
+                <h2>Contra-Ofertar</h2>
+            </div>
+            <div>
+                <textarea name="" id="" cols="30" rows="10" placeholder="especificación contra-oferta"  ref={textAreaRef}></textarea>
+            </div>
+            <div>
+                <button onClick={launchCounterOffer}>Contra-Ofertar</button>
+            </div>
+            <div className="close-counter-offer" onClick={deactiveCounterOffer}>
+                <img src={iconCloseCommet} alt="" />
+            </div>
+        </div>
+    </div>
+    )
+}
 
 function ImgDetail({name,price,condition,imgMyDetailMyPublication}){
     return(
@@ -73,11 +138,104 @@ function OfferDetail({idSearchProduct}){
     )
 }
 
-function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceProductOffer,idProduct,callBackinsertIdInProduct,imgBookOfferted}){
+
+function CounterOfferDetail({description,status}) {
+    
+    const colorBox = useRef()
+    const messageStatus = useRef()
+
+
+    if(status===0){
+        colorBox.current = "red-offer"
+        messageStatus.current = "RECHAZADO"
+    }
+
+    if(status===1){
+        colorBox.current = "green-offer"
+        messageStatus.current = "ACTIVA"
+    }
+
+    if(status===3){
+        colorBox.current = "blue-offer"
+        messageStatus.current = "INTERCAMBIADO"
+    }
+    
+    return(<div>
+            <div className="div-content-detail-counter-offer">
+                <div className={`${colorBox.current}`}>
+                    {messageStatus.current}
+                </div>
+                <div>
+                    Descripción
+                </div>
+                <div>
+                    {description}
+                </div>
+            </div>
+    </div>
+    )
+}
+function CounterOffer({stateCounterOffer,counterOffer}){
+
+   
+
+    if(stateCounterOffer===false || counterOffer.length === 0){
+        return
+    }
+   
+    
+    return(
+        <div className="card-counter-offer">
+            <div className="title-detail-counter-offer">
+                <h2>Contra-Ofertas</h2>
+            </div>
+            <div className="flex-box-counter-offer">
+                    {
+                    counterOffer.map((item,index) =>{
+                    return <CounterOfferDetail
+                        key={index}
+                        description={item.description}
+                        status={item.state}
+                    />
+                })
+                }
+            </div>
+           
+        </div>
+        
+    )
+}
+
+function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceProductOffer,idProduct,callBackinsertIdInProduct,imgBookOfferted,setIdOfferRef,setActiveOverlayCounter,counterOffer}){
+
+    const [stateCounterOfferInfo,setStateCounterOfferInfo] = useState(false)
+
+    useEffect(()=>{
+        const fetchProducts = async () =>{
+            try{
+                let body = {
+                     "idPublication":id,
+                      "status":1
+                }
+                const response = await axios.get(`http://localhost:8080/offer/obtain-all-offers`,body)
+                if(response.status === 200){
+                    console.log(response.data);
+                    setOffers(response.data)
+                }else{
+                    console.log("BAD RETURN OFF SERVER");
+                }
+            }catch(error){
+
+            }
+        }
+        fetchProducts()
+    },[])
+
 
     const selectImg =()=>{
         callBackinsertIdInProduct(idProduct)
     }
+
 
     const acceptOffer = async ()=>{
         const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
@@ -100,6 +258,15 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
         }catch(error){
             console.log(error.response.data.message);
         }
+    }
+
+    const activeCounterOffer = () =>{
+        setIdOfferRef(idOffer)
+        setActiveOverlayCounter(true)
+    }
+
+    const activeStateCounterOfferInfo = () =>{
+        setStateCounterOfferInfo(!stateCounterOfferInfo)
     }
 
     return(
@@ -132,8 +299,27 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
                     <div>
                         <h2 className="deny-offer">Rechazar</h2>
                     </div>
+                    <div>
+                        <h2 className="counter-offer" onClick={activeCounterOffer}>ContraOfertar</h2>
+                    </div>
                 </div>
+                <div className="div-counter-offer-icon" onClick={activeStateCounterOfferInfo}>
+                    <div>
+                        &#x25BC;
+                    </div>
+                </div>
+
+               
+
+                <CounterOffer stateCounterOffer={stateCounterOfferInfo}
+                counterOffer={counterOffer}
+                >
+
+                </CounterOffer>
+
             </div>
+           
+            
         </>
     )
 }
@@ -144,6 +330,8 @@ export function DetailMyPublications(){
     const [onePublication,setOnePublication] = useState(null) 
     const [idProduct,setIdProduct] = useState(null)
     const [offers,setOffers] = useState([])
+    const [activeOverlayCounter,setActiveOverlayCounter] = useState(false)
+    const idOfferRef = useRef()
 
     useEffect(()=>{
         const fetchProducts = async () =>{
@@ -182,6 +370,10 @@ export function DetailMyPublications(){
 
     const insertIdInProduct = (id)=>{
         setIdProduct(id)
+    }
+
+    const setIdOfferRef = (id) =>{
+        idOfferRef.current = id
     }
     return(
             <div className="container-detail-myPublication">
@@ -225,6 +417,9 @@ export function DetailMyPublications(){
                                     idProduct={item.productOffertedResponse!=null?item.productOffertedResponse.id:""}
                                     callBackinsertIdInProduct={insertIdInProduct}
                                     imgBookOfferted={item.productOffertedResponse!=null?item.productOffertedResponse.img:null}
+                                    setIdOfferRef={setIdOfferRef}
+                                    setActiveOverlayCounter={setActiveOverlayCounter}
+                                    counterOffer={item.counterOfferResponseDtoList}
                                     >
                                         
                                     </InformationDetail>
@@ -234,6 +429,13 @@ export function DetailMyPublications(){
                             
                         </div>
                     </div>
+                
+                   <OverlayCounterOffer
+                    idOfferRef={idOfferRef}
+                    activeOverlayCounter={activeOverlayCounter}
+                    setActiveOverlayCounter={setActiveOverlayCounter}
+                   ></OverlayCounterOffer>
+                   
             </div>
     )
 }

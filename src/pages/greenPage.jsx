@@ -68,7 +68,7 @@ export function StaticGreenPage(){
                     </li>
                   </ul>
                   <div>
-                    <img src={recycle} alt="" />
+                    <img src={recycle} alt="" className="recicle-img"/>
                   </div>
                 </section>
               </main>

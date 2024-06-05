@@ -19,6 +19,7 @@
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     position: sticky;
     top: 0;
+    z-index: 101;
     
 }
 
@@ -29,8 +30,8 @@
     width: 5%;
 }
 
-.nav-options-pages{
-   
+.nav-options-pages a{
+   font-size: 1.2rem;
 }
 
 .div-nav-auth{
@@ -45,6 +46,14 @@
     text-align: right;
 }
 
+.div-link-redirection{
+    font-weight: bold;
+}
+
+.div-nav-profile a{
+    font-weight: bold;
+}
+
 .div-close-session{
     text-align: right;
     flex: 1;
@@ -53,6 +62,8 @@
 .div-nav-auth a{
     text-decoration: none;
     color: rgb(10, 10, 10);
+    color: white;
+    font-weight: bold;
 }
 
 .div-nav-application-cue {

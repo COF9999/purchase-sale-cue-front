@@ -6,10 +6,6 @@ import "../css/myPublication.css"
 
 function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,statusPublication}){
 
-    const downPublication = () =>{
-        console.log("RECORDAR HACER");
-    }
-
     const colorBox = useRef()
     const messageStatus = useRef()
 
@@ -45,9 +41,7 @@ function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,condi
                     <p>Precio {priceProduct}</p>
                 </div>
                 <div className="box-inner">
-                    <div className="box-offerter">
-                        <button onClick={downPublication}>Bajar publicación</button>
-                    </div>
+                    
                     <div className="box-offerter">
                          <Link to={`/my-publications/detail/${id}`}>Ver detalles</Link>
                     </div>

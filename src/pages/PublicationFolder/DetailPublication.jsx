@@ -5,8 +5,7 @@ import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
-
-
+import { localStorageFunction } from "../js/methodsLocalStorage"
 
 function ImgDetail({name,imgDetailPublication}){
     return(
@@ -71,6 +70,8 @@ function OfferDetail({id}){
             const response = await axios.post(`http://localhost:8080/offer/`,body)
             if(response.status === 200){
                 console.log(response.data);
+                console.log("Oferta-------");
+                alert("Oferta realizada con exito");
             }else{
                 console.log("BAD RETURN OFF SERVER");
             }
@@ -118,6 +119,15 @@ function OfferDetail({id}){
     return(
         <>
              <div className="content-render-offer-detail">
+             <div className="box-offer">
+                    <div>
+                        <h3>Monto a ofertar</h3>
+                    </div>
+                    <div>
+                            <input ref={inputAmount} type="text" />
+                    </div>
+                </div>
+                
              <form action="">
                         <div className="selectbox">
                             <div className="select" id="select" ref={referenceSelect} onClick={activeSelect}>
@@ -148,23 +158,17 @@ function OfferDetail({id}){
                     </div>
                 </div>
                 <input type="hidden" name="pais" id="inputSelect" value=""/>
-                </form>
-                    <div className="box-offer">
-                    <div>
-                        <h3>Monto a ofertar</h3>
-                    </div>
-                    <div>
-                            <input ref={inputAmount} type="text" />
-                    </div>
-                            <div>
-                                <button onClick={offerterPublication}>Ofertar</button>
-                            </div>
-                    </div>
 
-                    {/* Mensaje correcto */}
-                    {/* <div>
-                        Operación realizada con exitoso
-                    </div> */}
+                </form>
+                <div className="div-btn-offer">
+                     <button onClick={offerterPublication}>Ofertar</button>
+                 </div>   
+
+
+                {/* Mensaje correcto */}
+                {/* <div>
+                    Operación realizada con exitoso
+                </div> */}
              </div>
         </>
     )
@@ -264,10 +268,145 @@ export function Overlay({idPublication,activeOverlay,changeVisorActiveOverlay}){
         </div>
     )
 }
+
+
+
+
+
+function CreateMessageChapt({id}){
+
+    const textAreaRef = useRef()
+
+    const launchCreateMessage   = async () =>{
+
+        const valueTextArea = textAreaRef.current.value
+        if(valueTextArea=="" || valueTextArea == undefined){
+            alert("Llena el campo de texto para chatear")
+            return
+        }
+
+        let body={
+            "message":valueTextArea, 
+            "tokenDto":{
+                "token": localStorageFunction()
+            },
+            "idPublication": id
+        }
+
+        try{
+            const response = await axios.post(`http://localhost:8080/comments-publication/`,body)
+            if(response.status === 200){
+                console.log("Mensaje creado exitosamente");
+            }else{
+                console.log("BAD RETURN OFF SERVER");
+            }
+        }catch(e){
+            console.log("Internal Server Error");
+        }
+    }
+
+    return(
+        <div className="container-chapt">
+            <div>
+                <textarea name="" id="" cols="30" rows="10" ref={textAreaRef}></textarea>
+            </div>
+            <div>
+                <button onClick={launchCreateMessage}>Enviar</button>
+            </div>
+        </div>
+    )
+}
+
+function DetailChapt({userInformation,message}){
+
+    if(userInformation==null){
+        return
+    }
+    
+    return(
+        <div className="cardDetailChapt">
+            <div>
+                {userInformation.name}
+            </div>
+            <div>
+                {message}
+            </div>
+        </div>
+    )
+}
+
+function Chapt({setVisualizateContentChap, visualizateContentChap,id}){
+
+    
+    if(visualizateContentChap===false){
+        return
+    }
+    
+    const [chapt,setChapt] = useState([])
+
+    useEffect(()=>{
+        const fetchProducts = async () =>{
+            try{
+                const response = await axios.get(`http://localhost:8080/comments-publication/${id}`)
+                if(response.status === 200){
+                    console.log(response.data);
+                    setChapt(response.data)
+                    
+                }else{
+                    console.log("BAD RETURN OFF SERVER");
+                }
+            }catch(e){
+                console.log(e);
+                console.log("Internal Server Error");
+            }
+        }
+        fetchProducts()
+    },[])
+
+    
+
+    const deactiveChap = () =>{
+        setVisualizateContentChap(false)
+    }
+    return(
+        <div className="father-content-chapt">
+            <div className="container-chapt">
+                <div className="all-chapts">
+                    {
+                        chapt.length>0
+                        ?chapt.map((item,index)=>{
+                            return <DetailChapt
+                                key={index}
+                                message={item.message}
+                                userInformation={item.userInformation}
+                            ></DetailChapt>
+                        })
+                        :""
+                        
+                    }
+                </div>
+            <div className="first-content-chapt">
+                <CreateMessageChapt
+                    id={id}
+                ></CreateMessageChapt>
+                 </div>
+            </div>
+            <div className="div-close-icon" onClick={deactiveChap}>
+                <div>
+                    <img src={closeIconReport} alt="" />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+
 export function Detail(){
     const {id} = useParams()
     const [onePublication,setOnePublication] = useState(null) 
     const [visualizationOverlay,setVisualizationOverlay] = useState(null)
+    
+    const [visualizateContentChap,setVisualizateContentChap] = useState(false)
 
     useEffect(()=>{
         const fetchProducts = async () =>{
@@ -288,6 +427,10 @@ export function Detail(){
 
     const launchPopUpDenunciation = () =>{
         setVisualizationOverlay(true)
+    }
+
+    const activeChapt = () =>{
+        setVisualizateContentChap(!visualizateContentChap)
     }
     return(
         <>
@@ -323,6 +466,11 @@ export function Detail(){
                         <img src={reportIcon} alt="report-icon" />
                     </div>
                 </div>
+                <div className="div-principal-chapt">
+                    <div className="div-content-icon-chapt" onClick={activeChapt}>
+                        <p>Chatear</p>
+                    </div>
+                </div>
             </div>
             <Overlay
                 idPublication={onePublication!=null?onePublication.id:null}
@@ -331,6 +479,12 @@ export function Detail(){
             >
 
             </Overlay>
+            <Chapt
+                visualizateContentChap={visualizateContentChap}
+                setVisualizateContentChap={setVisualizateContentChap}
+                id={onePublication!=null?onePublication.id:null}
+            />
+            
             
         </>
     )

@@ -2,7 +2,7 @@
     background-color:rgb(244, 244, 236);
     display: flex;
     font-family: Arial, Helvetica, sans-serif;
-    height: 95vh;
+    min-height: 95vh;
 }
 
 .container-filter-offer{
@@ -49,6 +49,7 @@
     border-radius: 5px;
     border: none;
     outline: none;
+    height: max-content;
 }
 
 .box-card-offer div{
@@ -81,3 +82,54 @@
     width: 250px;
     height: 250px;
 }
+.container-counter-offer{
+
+}
+.container-counter-offer{
+    background-color: rgb(228, 225, 225);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.div-btn-counterOffer-select{
+    display: flex;
+}
+
+.div-btn-counterOffer-select div{
+    flex: 1;
+    text-align: center;
+}
+
+.div-btn-counterOffer-select div button{
+    padding: 5px;
+}
+
+.counter-offer-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: aliceblue;
+    border-radius: 5px;
+    width: 100%;
+}
+
+@media (max-width:1200px) {
+    .container-list-offer{
+        display: grid;
+        grid-template-columns: auto auto;
+    }
+}
+
+
+@media (max-width:640px) {
+    .container-list-offer{
+        display: grid;
+        grid-template-columns: auto;
+    }
+}
+
+

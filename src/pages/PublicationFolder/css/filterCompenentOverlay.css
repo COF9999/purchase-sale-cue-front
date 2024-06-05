@@ -1,0 +1,59 @@
+.container-filter-publication-general{
+    background-color: aqua;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 10px;
+    border-radius: 10px;
+}
+
+.child{
+    background-color: rgba(18, 138, 208, 0.363);
+    padding: 20px;
+    width: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.part-2-price-filter{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    width: max-content;
+}
+
+.part-2-price-filter input{
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    width: 80%;
+}
+
+.part-2-valoration-filter{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    width: max-content;
+}
+
+.part-2-valoration-filter input{
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    width: 80%;
+}
+
+
+.box-btn-filter button{
+    padding: 10px;
+    background-color: rgb(15, 160, 244);
+    border-radius: 5px;
+    border: 1px solid rgb(20, 84, 196);
+}

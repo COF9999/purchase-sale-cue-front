@@ -76,3 +76,29 @@
     width: 250px;
     height: 250px;
 }
+
+.box-offerter button{
+    padding: 10px;
+    border: 1px solid;
+    width: 50%;
+    font-weight: bold;
+    border-radius: 5px;
+
+}
+
+.box-offerter{
+    width: 100%;
+}
+
+@media (max-width: 1200px) {
+    .container-list-products{
+        grid-template-columns: auto auto;
+        row-gap: 75px;
+    }
+}
+
+@media (max-width: 640px) {
+    .container-list-products{
+        grid-template-columns: auto;
+    }
+}
