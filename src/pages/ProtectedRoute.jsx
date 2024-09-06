@@ -48,10 +48,14 @@ function IconMenuResize({valueMenuOpen,toggleMenu,setNavHeaderBody,navHeaderBody
 }
 
 
-function NavHeaderBody ({navHeaderBody}){
+function NavHeaderBody ({navHeaderBody,setNavHeaderBody}){
 
     if(navHeaderBody===false){
         return
+    }
+
+    const deactiveNavHeaderBody = () =>{
+        setNavHeaderBody(false)
     }
 
 
@@ -60,23 +64,23 @@ function NavHeaderBody ({navHeaderBody}){
                     className="div-menu-resize"
                 >
                     <div className="div-link-redirection">
-                      <Link to="/publications">Publicaciones</Link>
+                      <Link to="/publications" onClick={deactiveNavHeaderBody}>Publicaciones</Link>
                     </div>
                     <div className="div-link-redirection">
-                        <Link to="/my-publications">Mis publicaciones</Link>
+                        <Link to="/my-publications" onClick={deactiveNavHeaderBody}>Mis publicaciones</Link>
                     </div>
                     <div className="div-link-redirection">
-                        <Link to={"/offer"}>Mis Ofertas</Link>
+                        <Link to={"/offer"} onClick={deactiveNavHeaderBody}>Mis Ofertas</Link>
                     </div>
                     <div className="div-link-redirection">
-                         <Link to="/my-products">Mis productos</Link>
+                         <Link to="/my-products" onClick={deactiveNavHeaderBody}>Mis productos</Link>
                     </div>
                     <div className="div-link-redirection">
-                         <Link to={"/transacciones"}>Transacciones</Link>
+                         <Link to={"/transacciones"} onClick={deactiveNavHeaderBody}>Transacciones</Link>
                     </div>
                    
                    <div className="div-link-redirection">
-                         <Link to="/green-page">Economia circular</Link>
+                         <Link to="/green-page" onClick={deactiveNavHeaderBody}>Economia circular</Link>
                    </div>    
                 </div>
     )
@@ -148,6 +152,7 @@ export function ProtectedRoute(){
             </div>
             <div className="father-div-content-aplication">
                 <NavHeaderBody
+                    setNavHeaderBody={setNavHeaderBody}
                     navHeaderBody={navHeaderBody}
                 ></NavHeaderBody>
                 <Outlet></Outlet>

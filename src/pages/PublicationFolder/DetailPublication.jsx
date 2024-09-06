@@ -273,13 +273,14 @@ export function Overlay({idPublication,activeOverlay,changeVisorActiveOverlay}){
 
 
 
-function CreateMessageChapt({id}){
+function CreateMessageChapt({idPublication,setSearhAgainFunction}){
 
     const textAreaRef = useRef()
 
-    const launchCreateMessage   = async () =>{
+    const launchCreateMessage = async () =>{
 
         const valueTextArea = textAreaRef.current.value
+        
         if(valueTextArea=="" || valueTextArea == undefined){
             alert("Llena el campo de texto para chatear")
             return
@@ -290,13 +291,15 @@ function CreateMessageChapt({id}){
             "tokenDto":{
                 "token": localStorageFunction()
             },
-            "idPublication": id
+            "idPublication": idPublication
         }
+
+        console.log(body);
 
         try{
             const response = await axios.post(`http://localhost:8080/comments-publication/`,body)
             if(response.status === 200){
-                console.log("Mensaje creado exitosamente");
+                setSearhAgainFunction()
             }else{
                 console.log("BAD RETURN OFF SERVER");
             }
@@ -310,8 +313,12 @@ function CreateMessageChapt({id}){
             <div>
                 <textarea name="" id="" cols="30" rows="10" ref={textAreaRef}></textarea>
             </div>
-            <div>
-                <button onClick={launchCreateMessage}>Enviar</button>
+            <div className="div-btn-send-chap">
+                <div>
+                    <div>
+                        <button onClick={launchCreateMessage} className="btn-send-message-chap">Enviar</button>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -335,19 +342,17 @@ function DetailChapt({userInformation,message}){
     )
 }
 
-function Chapt({setVisualizateContentChap, visualizateContentChap,id}){
+function Chapt({idPublication,setVisualizateContentChap}){
 
-    
-    if(visualizateContentChap===false){
-        return
-    }
-    
     const [chapt,setChapt] = useState([])
 
+    const [searchAgain,setSearchAgain] = useState(0)
+
     useEffect(()=>{
+        
         const fetchProducts = async () =>{
             try{
-                const response = await axios.get(`http://localhost:8080/comments-publication/${id}`)
+                const response = await axios.get(`http://localhost:8080/comments-publication/${idPublication}`)
                 if(response.status === 200){
                     console.log(response.data);
                     setChapt(response.data)
@@ -361,12 +366,18 @@ function Chapt({setVisualizateContentChap, visualizateContentChap,id}){
             }
         }
         fetchProducts()
-    },[])
+    },[searchAgain])
+
+   
 
     
 
     const deactiveChap = () =>{
         setVisualizateContentChap(false)
+    }
+
+    const setSearhAgainFunction = () =>{
+        setSearchAgain(searchAgain+1)
     }
     return(
         <div className="father-content-chapt">
@@ -387,7 +398,8 @@ function Chapt({setVisualizateContentChap, visualizateContentChap,id}){
                 </div>
             <div className="first-content-chapt">
                 <CreateMessageChapt
-                    id={id}
+                    setSearhAgainFunction={setSearhAgainFunction}
+                    idPublication={idPublication}
                 ></CreateMessageChapt>
                  </div>
             </div>
@@ -398,6 +410,7 @@ function Chapt({setVisualizateContentChap, visualizateContentChap,id}){
             </div>
         </div>
     )
+    
 }
 
 
@@ -479,11 +492,15 @@ export function Detail(){
             >
 
             </Overlay>
-            <Chapt
-                visualizateContentChap={visualizateContentChap}
+            {
+                onePublication!=null && visualizateContentChap != false
+                ? <Chapt
                 setVisualizateContentChap={setVisualizateContentChap}
-                id={onePublication!=null?onePublication.id:null}
-            />
+                idPublication={onePublication!=null?onePublication.id:null}
+                />
+                :""
+            }
+           
             
             
         </>

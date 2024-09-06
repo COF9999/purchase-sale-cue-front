@@ -1,7 +1,6 @@
 .container-detail-myPublication{
-    background-color: rgb(202, 202, 217);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    min-height: 95vh;
+    padding-top: 30px;
     display: flex;
     flex-direction: column;
 }
@@ -10,14 +9,16 @@
 .container-img-myPublication{
     display: flex;
     height: max-content;
-    background-color:rgb(250, 249, 248);
     height: max-content;
+    column-gap: 20px;
+    justify-content: center;
 }
 .content-render-img-myPublication{
     background-color: rgb(228, 230, 228);
     width: 40%;
     padding: 10px;
     display: flex;
+    border-radius: 5px;
 }
 
 .content-render-img-myPublication .box-description-publication{
@@ -60,15 +61,15 @@
 }
 
 .content-render-offer-myPublication{
-    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     column-gap: 30px;
+    background-color: rgb(228, 230, 228);
+    border-radius: 5px;
 }
 
 .content-render-offer-myPublication .box-offer{
-    background-color: rgba(200, 216, 210, 0.133);
     padding: 10px;
 }
 
@@ -88,25 +89,28 @@
     padding: 10px;
     font-size: 1.5rem;
 }
+
+.img-offer-detail{
+    width: 200px;
+}
 .container-information-myPublication{
+    padding: 10px;
     flex: 1;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    overflow-y: auto;
+    column-gap: 10px;
     row-gap: 30px;
-    padding: 20px;
-    align-items: center;
+    justify-content: space-around;
+    padding-top: 30px;
 }
 .container-all-info-myPublication{
     background-color: rgb(211, 218, 113);
     width: max-content;
     padding: 10px;
     border-radius: 20px;
-    display: flex;
     transition: .3s ease;
     position: relative;
-    display: flex;
-    flex-direction: column;
 }
 
 .container-all-info-myPublication:hover{
@@ -117,10 +121,6 @@
 .container-all-info-myPublication .card-offer-my-publication{
     text-align: center;
     padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    column-gap: 10px;
 }
 
 .container-all-info-myPublication .card-offer-my-publication div{

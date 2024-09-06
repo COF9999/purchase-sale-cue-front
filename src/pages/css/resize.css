@@ -14,15 +14,17 @@
 .father-div-content-aplication{
     position: relative;
     transition: .3s ease;
+    
 }
 
 .div-menu-resize{
-    position: absolute;
+    position:fixed;
     background-color: rgb(240, 235, 235);
     display: block;
     z-index: 150;
     text-align: left;
     width: 30%;
+    top: 5vh;
 }
 
 .div-link-redirection{

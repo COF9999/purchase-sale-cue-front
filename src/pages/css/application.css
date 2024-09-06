@@ -1,3 +1,10 @@
+:root{
+    /* --header: rgb(9, 23, 228); */
+    --header:  rgb(30, 30, 227)
+   
+}
+
+
 *{
     margin: 0;
     padding: 0;
@@ -6,21 +13,22 @@
 
 .container-application{
     min-height: 100vh;
-    /* background-color: bisque; */
+    background-color: #fff; 
+    display: flex;
+    flex-direction: column;
 }
 
 .container-nav-application{
     /* background-color: aqua; */
-    background-color: rgb(11, 137, 215);
+    background-color: var(--header);
     height: 5vh;
-    border-radius: 0px 1px 0px 1px;
+    border-radius: 0px 2px 0px 2px;
     display: flex;
     justify-content: center;
     font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     position: sticky;
     top: 0;
     z-index: 101;
-    
 }
 
 .div-nav-application-cue {
@@ -28,10 +36,15 @@
     justify-content: left;
     align-items: center;
     width: 5%;
+    
 }
 
 .nav-options-pages a{
-   font-size: 1.2rem;
+   color: white;
+   font-family: sans-serif;
+   font-size: .88em;
+   text-transform: uppercase;
+   font-weight: bold;
 }
 
 .div-nav-auth{
@@ -61,7 +74,6 @@
 }
 .div-nav-auth a{
     text-decoration: none;
-    color: rgb(10, 10, 10);
     color: white;
     font-weight: bold;
 }
@@ -89,5 +101,5 @@
 .container-nav-application nav a{
     text-decoration: none;
     /* color: aliceblue; */
-    color: black;
+  
 }

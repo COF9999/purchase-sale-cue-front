@@ -90,7 +90,7 @@ export function Product(){
            <div className="container-primary-products">
             <div className="container-principal-list-products">
                 <div className="container-div-link-to-create-products">
-                    <Link to={"create"}>Create products</Link>
+                    <Link to={"create"}>Crear productos</Link>
                 </div>
                 <div className="container-list-products">
                    {

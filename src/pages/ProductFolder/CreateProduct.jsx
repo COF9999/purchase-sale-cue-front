@@ -112,7 +112,7 @@ export function CreateProduct(){
         <>
          <div className="container-principal-create-product">
                 <div className="nav-go-to-products-create-products">
-                    <Link to="/my-products">Go to products</Link>
+                    <Link to="/my-products">Ir a productos</Link>
                 </div>
             <div className="container-main-form-create-product">
             <div className="container-form-create-product">
@@ -165,7 +165,7 @@ export function CreateProduct(){
                     <input ref={price} type="number" />
                 </div>
                 <div>
-                    <button onClick={createProduct} >Crear</button>
+                    <button className="btn-create-product" onClick={createProduct} >Crear</button>
                 </div>
             </div>
 

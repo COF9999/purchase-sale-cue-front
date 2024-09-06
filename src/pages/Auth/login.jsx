@@ -21,9 +21,7 @@ function BoxInformation({valueTitleCueThings}){
           </div>
         </div>
         <div className='div-welcome'>
-          <div>
               <h2>CUE THINGS</h2>
-          </div>
         </div>
     </div>
   )

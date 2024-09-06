@@ -102,9 +102,20 @@ function OfferDetail({idSearchProduct}){
     const [productContent,setProductContent] = useState(null)
 
     useEffect(()=>{
-        if(idSearchProduct!=null){
-            console.log("HACER ESTA MAÑANA");
-        }
+            const fetchProducts = async () =>{
+                try{
+                    const response = await axios.get(`http://localhost:8080/product/${idSearchProduct}`)
+                    if(response.status === 200){
+                        console.log(response.data);
+                        setProductContent(response.data)
+                    }else{
+                        console.log("BAD RETURN OFF SERVER");
+                    }
+                }catch(error){
+                    console.log(error);
+                }
+            }
+            fetchProducts()
     },[idSearchProduct])
 
 
@@ -112,24 +123,34 @@ function OfferDetail({idSearchProduct}){
     return(
         <>
              <div className="content-render-offer-myPublication">
-                <div className="box-offer">
+                {
+                    productContent!=null
+                    ? <div className="box-offer">
                     <div>
-                        <img src={imgBook} alt="" />
+                        <img src={`http://localhost:8080/images/${productContent.img}`} alt="" className="img-offer-detail"/>
                     </div>
                    
-                </div>
-                <div className="box-info-offer">
+                     </div>
+                :""
+                }
+               
+                {
+                    productContent!=null
+                    ?<div className="box-info-offer">
                     <div>
-                         Nombre Product
+                      {productContent.name}
                     </div>
                     <div>
-                         Precio
+                            {productContent.price}
                     </div>
                     <div>
-                        Condicion
+                        {productContent.description}
                     </div>
-                </div>
-                
+                    
+                    </div>
+                    :""
+                }
+                        
                 {/* <div>
                     Operación realizada con exitoso
                 </div> */}
@@ -238,26 +259,26 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
 
 
     const acceptOffer = async ()=>{
-        const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
-        try{
-            let body = {
-                "idOffer":idOffer,
-                "tokenDto":{
-                    "token": token()
-                }
-            }
-            const response = await axios.post(`http://localhost:8080/transaction/`,body)
-            if(response.status === 200){
-                console.log(response.data);
-                alert("Transación exitosa")
-            }else{
-                alert(e)
-                console.log(e);
-                console.log("BAD RETURN OFF SERVER TRANSACTION");
-            }
-        }catch(error){
-            console.log(error.response.data.message);
-        }
+        // const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
+        // try{
+        //     let body = {
+        //         "idOffer":idOffer,
+        //         "tokenDto":{
+        //             "token": token()
+        //         }
+        //     }
+        //     const response = await axios.post(`http://localhost:8080/transaction/`,body)
+        //     if(response.status === 200){
+        //         console.log(response.data);
+        //         alert("Transación exitosa")
+        //     }else{
+        //         alert(e)
+        //         console.log(e);
+        //         console.log("BAD RETURN OFF SERVER TRANSACTION");
+        //     }
+        // }catch(error){
+        //     console.log(error.response.data.message);
+        // }
     }
 
     const activeCounterOffer = () =>{
@@ -399,11 +420,6 @@ export function DetailMyPublications(){
                             }
                         </div>
                         <div className="container-information-myPublication">
-                            {
-                                offers.length === 0
-                                ?<h2>Aun no tienes ofertas</h2> 
-                                :<h2>Ofertas</h2>
-                            }
                             {
                                
                                 offers.map((item,index)=>{

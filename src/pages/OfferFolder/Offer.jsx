@@ -51,71 +51,73 @@ function CounterOffer({idCounterOffer,description,status,setIdCounterRef}){
 function UserHasStarEventOffer({idOffer,idCounterOffer}){
 
     const aceptCounterOffer = async() =>{
-        const valueIdCounterOffer = idCounterOffer.current
-        if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
-            alert("Selecciona una contra-oferta")
-            return
-        }
+        // const valueIdCounterOffer = idCounterOffer.current
+        // if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
+        //     alert("Selecciona una contra-oferta")
+        //     return
+        // }
 
     
-        const body ={
-            "idCounterOffer":valueIdCounterOffer,
-            "idOffer":idOffer,
-            "tokenDto":{
-                "token":localStorageFunction()
-            }
-        }
+        // const body ={
+        //     "idCounterOffer":valueIdCounterOffer,
+        //     "idOffer":idOffer,
+        //     "tokenDto":{
+        //         "token":localStorageFunction()
+        //     }
+        // }
 
-        try{
-            const response = await axios.post("http://localhost:8080/counter-offer/acept-counter-offer",body)
-            if(response.status === 200){
-                console.log(response.data); 
-            }else{
-                console.log("BAD RETURN OFF SERVER");
-            }
-        }catch(e){
-            console.log(e);
-            console.log("Internal Server Error");
-        }
+        // try{
+        //     const response = await axios.post("http://localhost:8080/counter-offer/acept-counter-offer",body)
+        //     if(response.status === 200){
+        //         console.log(response.data); 
+        //     }else{
+        //         console.log("BAD RETURN OFF SERVER");
+        //     }
+        // }catch(e){
+        //     alert(e.response.data.message)
+        // }
     }
 
     const denyCounterOffer = async () =>{
 
-        const valueIdCounterOffer = idCounterOffer.current
-        if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
-            alert("Selecciona una contra-oferta")
-            return
-        }
+        // const valueIdCounterOffer = idCounterOffer.current
+        // if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
+        //     alert("Selecciona una contra-oferta")
+        //     return
+        // }
 
-        console.log(valueIdCounterOffer);
+        // console.log(valueIdCounterOffer);
        
     
-        const body ={
-            "idCounterOffer":valueIdCounterOffer,
-            "state":0
-        }
+        // const body ={
+        //     "idCounterOffer":valueIdCounterOffer,
+        //     "idOffer":idOffer,
+        //     "tokenDto":{
+        //         "token":localStorageFunction()
+        //     }
+        // }
 
-        try{
-            const response = await axios.put("http://localhost:8080/counter-offer/update-state",body)
-            if(response.status === 200){
-                console.log(response.data); 
-                alert("Rechazo exitoso")
-            }else{
-                console.log("BAD RETURN OFF SERVER");
-            }
-        }catch(e){
-            console.log(e);
-            console.log("Internal Server Error");
-        }
+        // try{
+        //     const response = await axios.put("http://localhost:8080/counter-offer/deny-counter-offer",body)
+        //     if(response.status === 200){
+        //         console.log(response.data); 
+        //         alert("Rechazo exitoso")
+        //     }else{
+        //         console.log("BAD RETURN OFF SERVER");
+        //     }
+        // }catch(e){
+        //     alert(e.response.data.message)
+        // }
+        window.alert("Nada ARREGLANDO");
     }
 
     return(
         <div className="div-btn-counterOffer-select">
             <div>
-                <button onClick={aceptCounterOffer}>Aceptar</button>
+                <button disabled onClick={aceptCounterOffer}>Aceptar</button>
             </div>
             <div>
-                <button onClick={denyCounterOffer}>Rechazar</button>
+                <button  disabled onClick={denyCounterOffer}>Rechazar</button>
             </div>
         </div>
     )

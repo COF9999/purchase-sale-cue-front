@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState,useRef } from "react"
 import axios from "axios"
 import "../css/denunciation.css"
+import { localStorageFunction } from "../js/methodsLocalStorage"
 
 function Denunciations({userDenunciator,message}){
     return(
@@ -21,7 +22,7 @@ function ImgNameProfile({namePerson}){
                         <img src="https://cdn-icons-png.flaticon.com/512/6378/6378141.png" alt="" />
                     </div>
                     <div>
-                        <h2>{namePerson}</h2>
+                        <h2>{namePerson!=null?namePerson:""}</h2>
                     </div>
         </div>
     )
@@ -31,37 +32,40 @@ export function Profile(){
 
     const [dataProfile,setDataProfile] = useState(null)
     const [denunciations,setDenunciations] = useState([])
+    const poinstMap = useRef({
+        1:["10 cupones de bienestar"],
+        2:["30 cupones de bienestar"],
+        3:["90 cupones de bienestar"]
+    })
 
     useEffect(()=>{
         const fetchContentInfoProfile = async () =>{
-                // const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
+                
+                const body ={
+                    "token": localStorageFunction()
+                }
 
-                // const body ={
-                //     "token":token()
-                // }
-
-                // try{
-                //     const response = await axios.post("http://localhost:8080/product/select",body)
-                //     if(response.status === 200){
-                //         setDataProfile(response.data)
-                //         console.log(response.data);
-                //     }else{
-                //         console.log("BAD RETURN OFF SERVER");
-                //     }
-                // }catch(e){
-                //     console.log("Internal Server Error");
-                // }
+                try{
+                    const response = await axios.post("http://localhost:8080/user/my-points",body)
+                    if(response.status === 200){
+                        setDataProfile(response.data)
+                        console.log(response.data);
+                    }else{
+                        console.log("BAD RETURN OFF SERVER");
+                    }
+                }catch(e){
+                    console.log("Internal Server Error");
+                }
 
 
         }
 
         
         const fetchContentDenunciations = async () =>{
-            const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
-
+            
             const body ={
                 "tokenDto":{
-                    "token":token()
+                    "token": localStorageFunction()
                 }
             }
 
@@ -79,24 +83,38 @@ export function Profile(){
             }
         }
 
-        
-
-
-        
-
 
         fetchContentInfoProfile()
         fetchContentDenunciations()
 
     },[])
 
+    const calcPoinst = (points) =>{
+        if(points>200 && points < 500){
+            return poinstMap.current["1"]
+        }else if(points>500 && points < 1000){
+            return poinstMap.current["2"]
+        }else{
+            return poinstMap.current["3"]
+        }
+    }
+
     return(
         <div className="container-principal-my-profile">
 
-                <ImgNameProfile></ImgNameProfile>
+                <ImgNameProfile
+                    namePerson={dataProfile!= null?dataProfile.users.name:""}
+                ></ImgNameProfile>
                 <div className="div-points">
                     <h1>Puntos</h1>
-                    <h2>10000</h2>
+                    {
+                        dataProfile != null
+                        ?<div>
+                            <h2>{dataProfile.acumPoints}</h2>
+                            <h3>{calcPoinst(dataProfile.acumPoints)}</h3>
+                        </div>
+                        :""
+                    }
                 </div>
                 <div className="div-denunciations">
                 <h2>Denuncias</h2>

@@ -4,11 +4,12 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  // const [isAuth, setIsAuth] = useState(()=>{
-  //   return localStorage.getItem('token')?true:false
-  // });
+  
+  const [isAuth, setIsAuth] = useState(()=>{
+    return localStorage.getItem('token')?true:false
+  });
 
-  const [isAuth, setIsAuth] = useState(true)
+  // const [isAuth, setIsAuth] = useState(true)
   const [username,setUsername] = useState(()=>{
     return localStorage.getItem('username')!=""?localStorage.getItem('username'):setIsAuth(false)
   })

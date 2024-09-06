@@ -144,7 +144,7 @@
 }
 
 .container-chapt{
-    background-color: rgb(214, 209, 209);
+    background-color: rgb(241, 242, 239);
     padding: 30px;
     width: 80%;
     display: flex;
@@ -154,6 +154,17 @@
     row-gap: 20px;
 }
 
+.container-chapt textarea{
+    height: 5vh;
+    resize: none;
+    border-radius: 5px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+}
+
 .all-chapts{
     width: 80%;
     display: flex;
@@ -161,10 +172,12 @@
     justify-content: center;
     align-items: center;
     row-gap: 10px;
+    max-height: 500px;
+    overflow: auto;
 }
 
 .cardDetailChapt{
-    background-color: beige;
+    background-color: rgb(112, 237, 118);
     border-radius: 5px;
     padding: 10px;
 }
@@ -180,6 +193,24 @@
     width: 20px;
 }
 
+.div-btn-send-chap{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-btn-send-chap div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-send-message-chap{
+    padding: 10px;
+    width: 40%;
+    
+}
 
 .overlay{
     width: 100%;
