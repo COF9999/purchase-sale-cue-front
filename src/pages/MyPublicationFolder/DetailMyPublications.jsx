@@ -72,7 +72,7 @@ function OverlayCounterOffer({activeOverlayCounter,setActiveOverlayCounter,idOff
 function ImgDetail({name,price,condition,imgMyDetailMyPublication}){
     return(
         <>
-            <div className="content-render-img-myPublication">
+            <div className="content-render-img-myPublication --render-div">
                 <div className="box-image-myPublication">
                     <div className="box-name-product-myPublication">
                 
@@ -122,7 +122,7 @@ function OfferDetail({idSearchProduct}){
 
     return(
         <>
-             <div className="content-render-offer-myPublication">
+             <div className="content-render-offer-myPublication --render-div">
                 {
                     productContent!=null
                     ? <div className="box-offer">

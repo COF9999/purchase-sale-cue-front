@@ -1,6 +1,7 @@
 .container-detail-myPublication{
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding-top: 30px;
+    padding-bottom: 50px;
     display: flex;
     flex-direction: column;
 }
@@ -13,12 +14,33 @@
     column-gap: 20px;
     justify-content: center;
 }
-.content-render-img-myPublication{
-    background-color: rgb(228, 230, 228);
-    width: 40%;
+
+.--render-div{
+    background-color:  rgba(24, 96, 251, 0.800);
     padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 1px 5px 0px #bbb;
+    outline: none;
+    border: none;
     display: flex;
-    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    width: max-content;
+}
+
+.--render-div img{
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+}
+.content-render-img-myPublication{
+   width: 500px;
+}
+
+.--render-div:hover{
+    outline: 1px solid rgb(24, 96, 251);
+    outline-offset: 2px;
 }
 
 .content-render-img-myPublication .box-description-publication{
@@ -28,7 +50,7 @@
     align-items: center;
     flex-direction: column;
     row-gap: 5px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
 }
 
@@ -47,26 +69,11 @@
     justify-content: center;
     padding: 10px;
 }
-.box-image-detail-myPublication{
-    padding: 10px;
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.box-image-myPublication img{
-    height: 350px;
-    width: 300px;
-    border-radius: 5px;
-}
+
+
 
 .content-render-offer-myPublication{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    column-gap: 30px;
-    background-color: rgb(228, 230, 228);
-    border-radius: 5px;
+    width: 500px;
 }
 
 .content-render-offer-myPublication .box-offer{
@@ -81,17 +88,18 @@
 
 .content-render-offer-myPublication .box-info-offer{
     /* background-color: aquamarine; */
-    width: 30%;
 }
 
 .content-render-offer-myPublication .box-info-offer div{
     text-align: center;
-    padding: 10px;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
 .img-offer-detail{
-    width: 200px;
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
 }
 .container-information-myPublication{
     padding: 10px;
@@ -105,16 +113,17 @@
     padding-top: 30px;
 }
 .container-all-info-myPublication{
-    background-color: rgb(211, 218, 113);
+    background-color:  rgb(24, 96, 251);
     width: max-content;
-    padding: 10px;
+    padding: 20px;
     border-radius: 20px;
     transition: .3s ease;
     position: relative;
+    height: max-content;
 }
 
 .container-all-info-myPublication:hover{
-    transform: translateY(-5px);
+    transform: translateY(-2px);
 }
 
 
@@ -129,20 +138,30 @@
     max-width: 200px;
 }
 
-.accept-offer{
-    color: rgb(2, 144, 2);
+.card-offer-my-publication img{
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+}
+
+.card-offer-my-publication h2{
+    color: #f5f5f5;
+}
+
+.card-offer-my-publication .accept-offer{
+    color: rgb(3, 234, 3);
     cursor: pointer;
 }
 
 
 
-.deny-offer{
-    color: rgb(211, 6, 6);
+.card-offer-my-publication  .deny-offer{
+    color: rgba(196, 7, 7);
     cursor: pointer;
 }
 
-.counter-offer{
-    color: rgb(88, 6, 211);
+.card-offer-my-publication  .counter-offer{
+    color: rgb(187, 233, 3);
     cursor: pointer;
 }
 
@@ -189,11 +208,11 @@
 .div-counter-offer-icon{
     position: absolute;
     bottom: 10px;
-    right: 20px;
+    right: 8px;
 }
 
 .div-counter-offer-icon div{
-    font-size: 30px;
+    font-size: 25px;
 }
 
 .overlay-message-counter-offer{
@@ -247,10 +266,9 @@
     .container-img-myPublication{
         display: flex;
         flex-direction: column;
-    }
-
-    .content-render-img-myPublication{
-        width: 100vw;
+        justify-content: center;
+        align-items: center;
+        row-gap: 30px;
     }
 }
 
@@ -263,14 +281,32 @@
     }
 }
 
+@media (max-width:830px){
+    .container-information-myPublication{
+        grid-template-columns: auto auto;
+    }
+}
+
 @media (max-width:640px) {
     .content-render-img-myPublication{
-        width: 100vw;
         display: flex;
         flex-direction: column;
         row-gap: 20px;
-
+        width: 350px;
+        padding: 40px;
     }
 
-    
+    .content-render-offer-myPublication{
+        flex-direction: column;
+        width: 350px;
+    }
+
+    .box-info-offer{
+        width: 100%;
+    }
+
+    .container-information-myPublication{
+        grid-template-columns: auto;
+    }
 }
+

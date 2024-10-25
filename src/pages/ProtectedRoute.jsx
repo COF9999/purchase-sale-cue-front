@@ -20,7 +20,7 @@ function NavHeader({valueNavHeader}){
                     <Link to={"/offer"}>Mis Ofertas</Link>
                     <Link to="/my-products">Mis productos</Link>
                     <Link to={"/transacciones"}>Transacciones</Link>
-                    <Link to="/green-page">Economia circular</Link>
+                    <Link to="/green-page" target="_blank" rel="noopener">Economia circular</Link>
          </nav>
     )
 }
@@ -33,7 +33,6 @@ function IconMenuResize({valueMenuOpen,toggleMenu,setNavHeaderBody,navHeaderBody
         return
     }
 
-    console.log(valueMenuOpen);
     
     const changeToogleMenuState = ()=>{
         toggleMenu(!valueMenuOpen)

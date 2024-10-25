@@ -1,7 +1,9 @@
 import { useParams } from "react-router-dom"
 import reportIcon from "../../images/report-icon.png"
 import closeIconReport from "../../images/icon-close-512.webp"
+import iconChat from "../../images/icon-chat.png"
 import { useEffect, useRef, useState } from "react"
+import iconSendChat from "../../images/icon-send-chat.png"
 import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
@@ -27,15 +29,17 @@ function OptionProducts({id,name,price,funcOptionSelected,imgProductsOfferted}){
 
     const referenceSingleOption = useRef()
 
+    const referenceTitleObserver = useRef()
+
     return(
         <a href="#" className="opcion" ref={referenceSingleOption} onClick={(e)=>{
-            funcOptionSelected(e,referenceSingleOption)
+            funcOptionSelected(e,referenceSingleOption,referenceTitleObserver)
         }}>
         <div className="contenido-opcion">
             <img src={`http://localhost:8080/images/${imgProductsOfferted}`} alt=""/>
-            <div className="textos">
+            <div className="textos" >
                 <p className="p-ocult">{id}</p>
-                <h2 className="titulo">{name}</h2>
+                <h2 className="titulo" ref={referenceTitleObserver}>{name}</h2>
                 <p className="descripcion">{price}</p>
             </div>
         </div>
@@ -69,8 +73,6 @@ function OfferDetail({id}){
         try{
             const response = await axios.post(`http://localhost:8080/offer/`,body)
             if(response.status === 200){
-                console.log(response.data);
-                console.log("Oferta-------");
                 alert("Oferta realizada con exito");
             }else{
                 console.log("BAD RETURN OFF SERVER");
@@ -85,9 +87,9 @@ function OfferDetail({id}){
         referenceOptions.current.classList.toggle('active')
     }
 
-    const optionSelected = (e,referenceSingleOption) => {
-        e.preventDefault()
-        referenceContentSelect.current.innerHTML = e.currentTarget.innerHTML
+    const optionSelected = (e,referenceSingleOption,referenceTitle) => {
+        referenceTitle.current.classList.add('insert-node')
+        referenceContentSelect.current.innerHTML = referenceTitle.current.parentElement.parentElement.parentElement.innerHTML
         referenceSelect.current.classList.toggle('active')
         referenceOptions.current.classList.toggle('active')
         productHasBeenSelected.current = referenceSingleOption.current.querySelector(".p-ocult").textContent;
@@ -133,7 +135,6 @@ function OfferDetail({id}){
                             <div className="select" id="select" ref={referenceSelect} onClick={activeSelect}>
                             <div className="contenido-select" ref={referenceContentSelect}>
                                 <h1 className="titulo">Escoge un producto</h1>
-                                <p className="descripción">Producto</p>
                             </div>
                             <span className="material-symbols-outlined">expand_more</span>
                         </div>
@@ -161,7 +162,7 @@ function OfferDetail({id}){
 
                 </form>
                 <div className="div-btn-offer">
-                     <button onClick={offerterPublication}>Ofertar</button>
+                     <button onClick={offerterPublication}>OFERTAR</button>
                  </div>   
 
 
@@ -176,26 +177,27 @@ function OfferDetail({id}){
 
 function InformationDetail({nameOwner,condition,price,description}){
     return(
-        <>
-            <div className="container-all-info-detail">
-                <div>
-                    <h3>Dueño</h3>
-                    <p>{nameOwner}</p>
+            
+                <div className="container-description">
+                    <div className="description-basic">
+                        <div>
+                            <h3>Dueño</h3>
+                            <p>{nameOwner}</p>
+                        </div>
+                        <div>
+                            <h3>Precio</h3>
+                            <p>{price}</p>
+                        </div>
+                        <div>
+                            <h3>Estado</h3>
+                            <p>{condition}</p>
+                        </div>
+                        <div>
+                            <h3>Descripción</h3>
+                            <p className="p-description"> {description}</p>
+                        </div> 
+                    </div>
                 </div>
-                <div>
-                    <h3>Precio</h3>
-                    <p>{price}</p>
-                </div>
-                <div>
-                    <h3>Estado</h3>
-                    <p>{condition}</p>
-                </div>
-                <div>
-                    <h3>Descripción</h3>
-                    <p>{description}</p>
-                </div>
-            </div>
-        </>
     )
 }
 
@@ -251,7 +253,7 @@ export function Overlay({idPublication,activeOverlay,changeVisorActiveOverlay}){
                     </div>
                    
                    <div>
-                        <textarea name="" id="" cols="30" rows="10" ref={textAreaRef}>
+                        <textarea name="" id="" cols="1" rows="1" ref={textAreaRef}>
 
                         </textarea>
                    </div>
@@ -279,7 +281,9 @@ function CreateMessageChapt({idPublication,setSearhAgainFunction}){
 
     const launchCreateMessage = async () =>{
 
-        const valueTextArea = textAreaRef.current.value
+        const valueTextArea = textAreaRef.current.textContent
+
+        console.log(valueTextArea);
         
         if(valueTextArea=="" || valueTextArea == undefined){
             alert("Llena el campo de texto para chatear")
@@ -294,7 +298,7 @@ function CreateMessageChapt({idPublication,setSearhAgainFunction}){
             "idPublication": idPublication
         }
 
-        console.log(body);
+        
 
         try{
             const response = await axios.post(`http://localhost:8080/comments-publication/`,body)
@@ -304,36 +308,94 @@ function CreateMessageChapt({idPublication,setSearhAgainFunction}){
                 console.log("BAD RETURN OFF SERVER");
             }
         }catch(e){
-            console.log("Internal Server Error");
+            console.log("Internal Server Error",e);
         }
     }
 
     return(
-        <div className="container-chapt">
-            <div>
-                <textarea name="" id="" cols="30" rows="10" ref={textAreaRef}></textarea>
-            </div>
-            <div className="div-btn-send-chap">
-                <div>
+        <div className="wrapper-chapt">
+            <div className="chat-tab-1">
+                <div className="data-content-input">
+                    <div 
+                        className="campus-text content-tab-1"
+                        aria-placeholder="Escribe un mensaje" 
+                        contentEditable="true"
+                    type="text" ref={textAreaRef} 
+                    >
+                      
+                    </div>
+                </div>
+               
+                <div className="div-btn-send-chap content-tab-1">
                     <div>
-                        <button onClick={launchCreateMessage} className="btn-send-message-chap">Enviar</button>
+                        <div>
+                            <img src={iconSendChat} onClick={launchCreateMessage} className="btn-send-message-chap"/>
+                        
+                        </div>
                     </div>
                 </div>
             </div>
+           
         </div>
     )
 }
 
 function DetailChapt({userInformation,message}){
 
+
+    const refColorCard = useRef("friendComment")
+
     if(userInformation==null){
         return
     }
+
+    const decodeJWT = (token)=>{
+        const parts = token.split('.');
+      
+        if (parts.length !== 3) {
+          throw new Error('Invalid token format');
+        }
+      
+        // Decodificamos el payload de base64 a JSON
+        const payload = JSON.parse(atob(parts[1]));
+      
+        return payload;
+    }
+
+
     
+
+    useEffect(()=>{
+        const consultData = async ()=>{
+
+            try{
+
+              const token = localStorageFunction()
+                
+               const body =  {
+                    "token": token
+               }
+                const response = await axios.post('http://localhost:8080/security/token-is-valid',body)
+
+                if(response.status === 200 && response.data){
+                    if(userInformation.identification === decodeJWT(token).sub){
+                       refColorCard.current = "myComment"
+                    }
+                }else{
+                    
+                }
+            }catch(e){
+                localStorage.removeItem('token')
+            }
+        }
+        consultData()
+    },[])
+ 
+
     return(
-        <div className="cardDetailChapt">
+        <div className={`cardDetailChapt ${refColorCard.current}`}>
             <div>
-                {userInformation.name}
+                <p>~{userInformation.name}</p>
             </div>
             <div>
                 {message}
@@ -382,32 +444,31 @@ function Chapt({idPublication,setVisualizateContentChap}){
     return(
         <div className="father-content-chapt">
             <div className="container-chapt">
-                <div className="all-chapts">
-                    {
-                        chapt.length>0
-                        ?chapt.map((item,index)=>{
-                            return <DetailChapt
-                                key={index}
-                                message={item.message}
-                                userInformation={item.userInformation}
-                            ></DetailChapt>
-                        })
-                        :""
-                        
-                    }
-                </div>
-            <div className="first-content-chapt">
-                <CreateMessageChapt
-                    setSearhAgainFunction={setSearhAgainFunction}
-                    idPublication={idPublication}
-                ></CreateMessageChapt>
-                 </div>
+                        <div className="all-chapts">
+                            {
+                                chapt.length>0
+                                ?chapt.map((item,index)=>{
+                                    return <DetailChapt
+                                        key={index}
+                                        message={item.message}
+                                        userInformation={item.userInformation}
+                                    ></DetailChapt>
+                                })
+                                :""
+                            }
+                        </div>
+                        <div className="first-content-chapt">
+                                <CreateMessageChapt
+                                    setSearhAgainFunction={setSearhAgainFunction}
+                                    idPublication={idPublication}
+                                />
+                        </div>
             </div>
-            <div className="div-close-icon" onClick={deactiveChap}>
-                <div>
-                    <img src={closeIconReport} alt="" />
-                </div>
-            </div>
+                        <div className="div-close-icon" onClick={deactiveChap}>
+                                <div>
+                                    <img src={closeIconReport} alt="" />
+                                </div>
+                        </div>
         </div>
     )
     
@@ -426,7 +487,7 @@ export function Detail(){
             try{
                 const response = await axios.get(`http://localhost:8080/publication/${id}`)
                 if(response.status === 200){
-                    console.log(response.data);
+                   
                     setOnePublication(response.data)
                 }else{
                     console.log("BAD RETURN OFF SERVER");
@@ -447,11 +508,10 @@ export function Detail(){
     }
     return(
         <>
-            <div className="container-detail-publication">
-                <div></div>
+           
                 {
                     onePublication!=null
-                    ?<div>
+                    ?<div className="container-detail-publication">
                         <div className="container-img-offer">
                                 <ImgDetail 
                                     name={onePublication.productResponse.name}
@@ -467,31 +527,34 @@ export function Detail(){
                                 condition={onePublication.productResponse.condition}
                                 price={onePublication.productResponse.price}
                                 description={onePublication.productResponse.description}
-                            >
-                            </InformationDetail>
+                                onePublication={onePublication}
+                            />
+                             <div className="container-actions-detail-publication">
+                              
+                                    <div className="div-denunciation --content-div-icon">
+                                        <div className="div-content-icon-report" onClick={launchPopUpDenunciation}>
+                                            <img src={reportIcon} alt="report-icon" />
+                                        </div>
+                                    </div>
+                                    <div className="div-chapt --content-div-icon">
+                                            <div className="div-content-icon-chapt" onClick={activeChapt}>
+                                                <img src={iconChat} alt="Icon-Chat"/>
+                                            </div>
+                                    </div>
+                               
+                               
+                             </div>
+                            
                         </div>
                     </div>
                     :""
                 }
-                
-                <div className="div-principal-denunciation">
-                    <div className="div-content-icon" onClick={launchPopUpDenunciation}>
-                        <img src={reportIcon} alt="report-icon" />
-                    </div>
-                </div>
-                <div className="div-principal-chapt">
-                    <div className="div-content-icon-chapt" onClick={activeChapt}>
-                        <p>Chatear</p>
-                    </div>
-                </div>
-            </div>
             <Overlay
                 idPublication={onePublication!=null?onePublication.id:null}
                 activeOverlay={visualizationOverlay}
                 changeVisorActiveOverlay={setVisualizationOverlay}
-            >
+            />
 
-            </Overlay>
             {
                 onePublication!=null && visualizateContentChap != false
                 ? <Chapt
@@ -499,10 +562,7 @@ export function Detail(){
                 idPublication={onePublication!=null?onePublication.id:null}
                 />
                 :""
-            }
-           
-            
-            
+            }        
         </>
     )
 }

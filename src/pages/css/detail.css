@@ -1,6 +1,6 @@
 .container-detail-publication{
     background-color: rgb(202, 202, 217);
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-family:Tahoma, sans-serif;
     min-height: 95vh;
     display: flex;
     flex-direction: column;
@@ -10,9 +10,8 @@
 
 .container-img-offer{
     display: flex;
-    height: 50%;
     background-color:rgb(250, 249, 248);
-    height: max-content;
+    min-height: 50vh;
 }
 .content-render-img-detail{
     background-color: rgb(228, 230, 228);
@@ -23,26 +22,23 @@
 }
 
 .box-image-detail {
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .box-name-product-detail{
-    display: flex;
-    justify-content: center;
+    text-align: center;
     padding: 10px;
+    color: #000;
+    font-weight: bolder;
 }
 .box-image-detail{
     padding: 10px;
     flex: 1;
-    /* display: flex;
-    justify-content: center;
-    align-items: center; */
 }
 .box-image-detail img{
     height: 350px;
     width: 300px;
-    border-radius: 5px;
+    border-radius: 10px;
 }
 
 .content-render-offer-detail{
@@ -57,14 +53,15 @@
 }
 
 .content-render-offer-detail .box-offer{
-    background-color: rgba(241, 230, 27, 0.987);
+    background-color: rgb(24, 96, 251);
     padding: 10px;
     border-radius: 10px;
     transition: .3s ease-in-out;
 }
 
 .content-render-offer-detail .box-offer:hover{
-    padding: 14px;
+    outline: 1px solid rgb(24, 96, 251);
+    outline-offset: 5px;
 }
 
 .content-render-offer-detail .box-offer div{
@@ -76,6 +73,14 @@
 .box-offer input{
     height: 3vh;
     padding: 5px;
+    border: none;
+    outline: none;
+    border-bottom: 1px solid #333;
+    border-radius: 5px;
+}
+
+.box-offer h3{
+    color: #f5f5f5;
 }
 .container-all-info-detail div{
     text-align: center;
@@ -91,35 +96,97 @@
 
 .div-btn-offer button{
     padding: 10px;
-    border: 1px solid;
+    outline: none;
+    border: none;
     font-weight: bold;
-    width: 30%;
+    width: 20%;
+    border-radius: 10px;
+    background-color:  rgb(24, 96, 251);
+    color: #f5f5f5;
+    font-size: 1em;
+    letter-spacing: 2px;
+    transition-property: box-shadow,outline, outline-offset;
+    transition-duration: .4s;
+    transition-timing-function: ease-out;
+    transition-delay: .2s;
+    box-sizing: content-box;
 }
-.div-principal-denunciation{
-    position: absolute;
-    bottom:  0;
+
+.div-btn-offer button:hover{
+    box-shadow: 0 2px 5px 0 rgb(24, 96, 251);
+    outline: 1px solid #f5f5f5;
+    outline-offset: 2px;
+}
+
+
+.container-information-detail{
+    min-height: 45vh;
+    display: flex;
+}
+
+.container-description{
+    width: 60%;
+}
+
+.description-basic{
+    width: 50%;
+    text-align: center;
+    padding: 10px;
+}
+.description-basic div{
+    padding-top: 10px;
+}
+
+.description-basic div p{
+    line-height: 1.5em;
+}
+
+.description-basic .p-description{
+    text-align: justify;
+    width: 250px;
+    margin: auto;
+}
+
+.container-actions-detail-publication{
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    row-gap: 50px;
+    height: 30vh;
+    column-gap: 20px;
+}
+.--content-div-icon{
     cursor: pointer;
+    transition: transform, .3s,ease-out .2s;
 }
 
-.div-principal-chapt{
-    position: absolute;
-    bottom: 70px;
-    left: 5px;
+.--content-div-icon:hover{
+    transform: translateY(-2px);
 }
 
-.div-content-icon img{
-    width: 50px;
-    transition: .3s ease;
+.--content-div-icon img{
+    width: 150px;
 }
 
-.div-content-icon img:hover{
-    width: 60px;
+
+.div-content-icon-report{
+    text-align: center;
+    width: max-content;
 }
+
+
+.div-content-icon-chapt {
+    text-align: center;
+    width: max-content;
+}
+
+
 
 
 .father-content-chapt{
     width: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: #efeae2;
     position: fixed;
     bottom: 0;
     display: flex;
@@ -129,57 +196,6 @@
     z-index: 200;
     font-family:Verdana, Geneva, Tahoma, sans-serif;
     
-}
-
-.father-content-chapt{
-    background-color: rgb(255, 255, 255);
-    
-}
-
-.first-content-chapt{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.container-chapt{
-    background-color: rgb(241, 242, 239);
-    padding: 30px;
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 20px;
-}
-
-.container-chapt textarea{
-    height: 5vh;
-    resize: none;
-    border-radius: 5px;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-}
-
-.all-chapts{
-    width: 80%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    row-gap: 10px;
-    max-height: 500px;
-    overflow: auto;
-}
-
-.cardDetailChapt{
-    background-color: rgb(112, 237, 118);
-    border-radius: 5px;
-    padding: 10px;
 }
 
 .father-content-chapt .div-close-icon{
@@ -193,11 +209,117 @@
     width: 20px;
 }
 
-.div-btn-send-chap{
-    width: 100%;
+.father-content-chapt{
+    background-color: rgb(255, 255, 255);
+    
+}
+
+
+
+.container-chapt{
+    background-color: #efeae2;
+    padding-top: 10px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+
+.first-content-chapt{
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: max-content;
+    padding: 15px 0 10px 0;
+    background-color: #f0f2f5;
+}
+
+
+.all-chapts{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 20px;
+    row-gap: 10px;
+    overflow: auto;
+    flex-grow: 1;
+}
+
+.cardDetailChapt{
+    border-radius: 5px;
+    padding: 10px;
+    width: 350px;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.cardDetailChapt.myComment{
+    background-color: #70ed76;
+}
+
+.cardDetailChapt.friendComment{
+    background-color: #fff;
+}
+
+.wrapper-chapt{
+    width: 100%;
+}
+
+
+.data-content-input{
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    width: inherit;
+    min-width: 0;
+    min-height: 0px;
+    padding: 9px 12px;
+    margin: 5px 8px;
+    font-size: 15px;
+    font-weight: normal;
+    line-height: 20px;
+    border-radius: 8px;
+    outline: none;
+    will-change: width;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    border: none;
+}
+
+.chat-tab-1{
+    width: 100%;
+    display: flex;
+}
+
+.chat-tab-1 .campus-text{
+    max-height: 11.76em;
+    height: max-content;
+    user-select: text;
+    white-space: pre-wrap;
+    word-break: break-word;
+    flex-grow: 1;
+    border: none;
+    outline: none;
+}
+
+
+
+
+
+
+
+.div-btn-send-chap{
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+
 }
 
 .div-btn-send-chap div{
@@ -208,8 +330,9 @@
 }
 .btn-send-message-chap{
     padding: 10px;
-    width: 40%;
-    
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
 }
 
 .overlay{
@@ -225,6 +348,8 @@
     font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 
+/* ---------------------------Reportar */
+
 .div-content-card-report{
     background-color: rgb(0, 72, 255);
     padding: 15px;
@@ -239,9 +364,6 @@
     text-align: center;
 }
 
-.div-content-card-report h2{
-    
-}
 .div-content-card-report textarea{
     resize: none;
     padding: 10px;
@@ -277,14 +399,44 @@
 }
 
 @media (max-width: 980px) {
+   
+    .container-information-detail{
+        flex-direction: column;
+    }
+    
+
+    .container-description{
+        width: 100%;
+    }
+
+    .description-basic{
+        margin: auto;
+    }
+
+    .list-actions-detail{
+        margin: auto;
+    }
+
+    .container-actions-detail-publication{
+        justify-content: center;
+    }
+    
+}
+
+@media (max-width: 860px) {
     .container-img-offer{
-        display: flex;
         flex-direction: column;
     }
 
     .content-render-img-detail{
-        width: 100vw;
-
+        width: 100%;
     }
-    
+
+    .--content-div-icon img{
+        width: 60px;
+    }
+
+    .div-btn-offer button{
+        width: 200px;
+    }
 }
