@@ -6,6 +6,7 @@ import FileUpload from "../components/FileUpload";
 import axios from 'axios';
 import { DialogModal } from "../components/Reutil/ModalAlert";
 import { validateNameProduct } from "./ValidationsProduct";
+import baseUrl from "../../hostConfig";
 
 export function CreateProduct(){
     const nameProduct = useRef()
@@ -24,7 +25,6 @@ export function CreateProduct(){
         "file":"",
     })
    
-
 
     useEffect(()=>{
         const getToken = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
@@ -57,7 +57,7 @@ export function CreateProduct(){
         formData.append("token",token())
 
         try{
-            const response = await axios.post('http://localhost:8080/product/', formData, {
+            const response = await axios.post(`${baseUrl}/product/`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios"
 import "../css/offer.css"
 import { localStorageFunction } from "../js/methodsLocalStorage.js";
+import baseUrl from "../../hostConfig";
 
 
 function CounterOffer({idCounterOffer,description,status,setIdCounterRef}){
@@ -51,63 +52,69 @@ function CounterOffer({idCounterOffer,description,status,setIdCounterRef}){
 function UserHasStarEventOffer({idOffer,idCounterOffer}){
 
     const aceptCounterOffer = async() =>{
-        // const valueIdCounterOffer = idCounterOffer.current
-        // if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
-        //     alert("Selecciona una contra-oferta")
-        //     return
-        // }
+        const valueIdCounterOffer = idCounterOffer.current
+        if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
+            alert("Selecciona una contra-oferta")
+            return
+        }
 
     
-        // const body ={
-        //     "idCounterOffer":valueIdCounterOffer,
-        //     "idOffer":idOffer,
-        //     "tokenDto":{
-        //         "token":localStorageFunction()
-        //     }
-        // }
+        const body ={
+            "idCounterOffer":valueIdCounterOffer,
+            "idOffer":idOffer,
+            "tokenDto":{
+                "token":localStorageFunction()
+            }
+        }
 
-        // try{
-        //     const response = await axios.post("http://localhost:8080/counter-offer/acept-counter-offer",body)
-        //     if(response.status === 200){
-        //         console.log(response.data); 
-        //     }else{
-        //         console.log("BAD RETURN OFF SERVER");
-        //     }
-        // }catch(e){
-        //     alert(e.response.data.message)
-        // }
+        try{
+            const response = await axios.post(`${baseUrl}/counter-offer/acept-counter-offer`,body)
+            if(response.status === 200){
+                console.log(response.data); 
+            }else{
+                console.log("BAD RETURN OFF SERVER");
+            }
+        }catch(e){
+            alert(e.response.data.message)
+        }
     }
 
     const denyCounterOffer = async () =>{
 
-        // const valueIdCounterOffer = idCounterOffer.current
-        // if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
-        //     alert("Selecciona una contra-oferta")
-        //     return
-        // }
+        const valueIdCounterOffer = idCounterOffer.current
+        console.log(valueIdCounterOffer);
+        
+        if(valueIdCounterOffer==undefined || valueIdCounterOffer==""){
+            alert("Selecciona una contra-oferta")
+            return
+        }
 
-        // console.log(valueIdCounterOffer);
+        console.log(valueIdCounterOffer);
+
+
        
     
-        // const body ={
-        //     "idCounterOffer":valueIdCounterOffer,
-        //     "idOffer":idOffer,
-        //     "tokenDto":{
-        //         "token":localStorageFunction()
-        //     }
-        // }
+        const body ={
+            "idCounterOffer":valueIdCounterOffer,
+            "idOffer":idOffer,
+            "tokenDto":{
+                "token":localStorageFunction()
+            }
+        }
 
-        // try{
-        //     const response = await axios.put("http://localhost:8080/counter-offer/deny-counter-offer",body)
-        //     if(response.status === 200){
-        //         console.log(response.data); 
-        //         alert("Rechazo exitoso")
-        //     }else{
-        //         console.log("BAD RETURN OFF SERVER");
-        //     }
-        // }catch(e){
-        //     alert(e.response.data.message)
-        // }
+        try{
+            const response = await axios.put(`${baseUrl}/counter-offer/deny-counter-offer`,body)
+            if(response.status === 200){
+                console.log(response.data); 
+                alert("Rechazo exitoso")
+            }else{
+                console.log("BAD RETURN OFF SERVER");
+            }
+        }catch(e){
+            console.log(e);
+            
+            alert(e.response.data.message)
+        }
         window.alert("Nada ARREGLANDO");
     }
 
@@ -117,7 +124,7 @@ function UserHasStarEventOffer({idOffer,idCounterOffer}){
                 <button disabled onClick={aceptCounterOffer}>Aceptar</button>
             </div>
             <div>
-                <button  disabled onClick={denyCounterOffer}>Rechazar</button>
+                <button onClick={denyCounterOffer}>Rechazar</button>
             </div>
         </div>
     )
@@ -166,7 +173,7 @@ function CardMyOffer({id,nameProductRequired,productExchanged,priceOffer,imgProd
                     <h2>{nameProductRequired}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`http://localhost:8080/images/${imgProductRequired}`} alt="book-loaded" />
+                    <img src={`${baseUrl}/images/${imgProductRequired}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                     {
@@ -232,7 +239,7 @@ export function Offer(){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/offer/my-offers",body)
+                    const response = await axios.post(`${baseUrl}/offer/my-offers`,body)
                     if(response.status === 200){
                         console.log("respuesta");
                         console.log(response.data);

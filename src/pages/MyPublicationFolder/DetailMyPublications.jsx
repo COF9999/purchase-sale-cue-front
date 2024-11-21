@@ -4,6 +4,7 @@ import "../css/myPublicationDetail.css"
 import axios from "axios"
 import imgBook from "../../images/img-book.jpeg"
 import iconCloseCommet from "../../images/icon-close-512.webp"
+import baseUrl from "../../hostConfig"
 
 
 
@@ -35,7 +36,7 @@ function OverlayCounterOffer({activeOverlayCounter,setActiveOverlayCounter,idOff
                     "token": token()
                 }
             }
-            const response = await axios.post(`http://localhost:8080/counter-offer/`,body)
+            const response = await axios.post(`${baseUrl}/counter-offer/`,body)
             if(response.status === 200){
                 console.log(response.data);
                 alert("Contra-oferta exitosa")
@@ -77,7 +78,7 @@ function ImgDetail({name,price,condition,imgMyDetailMyPublication}){
                     <div className="box-name-product-myPublication">
                 
                     </div>
-                     <img src={`http://localhost:8080/images/${imgMyDetailMyPublication}`} alt="#" />
+                     <img src={`${baseUrl}/images/${imgMyDetailMyPublication}`} alt="#" />
                 </div>
                 <div className="box-description-publication">
                     <div>
@@ -104,7 +105,7 @@ function OfferDetail({idSearchProduct}){
     useEffect(()=>{
             const fetchProducts = async () =>{
                 try{
-                    const response = await axios.get(`http://localhost:8080/product/${idSearchProduct}`)
+                    const response = await axios.get(`${baseUrl}/product/${idSearchProduct}`)
                     if(response.status === 200){
                         console.log(response.data);
                         setProductContent(response.data)
@@ -127,7 +128,7 @@ function OfferDetail({idSearchProduct}){
                     productContent!=null
                     ? <div className="box-offer">
                     <div>
-                        <img src={`http://localhost:8080/images/${productContent.img}`} alt="" className="img-offer-detail"/>
+                        <img src={`${baseUrl}/images/${productContent.img}`} alt="" className="img-offer-detail"/>
                     </div>
                    
                      </div>
@@ -198,6 +199,9 @@ function CounterOfferDetail({description,status}) {
 }
 function CounterOffer({stateCounterOffer,counterOffer}){
 
+    console.log(stateCounterOffer);
+    
+
    
 
     if(stateCounterOffer===false || counterOffer.length === 0){
@@ -238,7 +242,7 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
                      "idPublication":id,
                       "status":1
                 }
-                const response = await axios.get(`http://localhost:8080/offer/obtain-all-offers`,body)
+                const response = await axios.get(`${baseUrl}/offer/obtain-all-offers`,body)
                 if(response.status === 200){
                     console.log(response.data);
                     setOffers(response.data)
@@ -259,26 +263,26 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
 
 
     const acceptOffer = async ()=>{
-        // const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
-        // try{
-        //     let body = {
-        //         "idOffer":idOffer,
-        //         "tokenDto":{
-        //             "token": token()
-        //         }
-        //     }
-        //     const response = await axios.post(`http://localhost:8080/transaction/`,body)
-        //     if(response.status === 200){
-        //         console.log(response.data);
-        //         alert("Transación exitosa")
-        //     }else{
-        //         alert(e)
-        //         console.log(e);
-        //         console.log("BAD RETURN OFF SERVER TRANSACTION");
-        //     }
-        // }catch(error){
-        //     console.log(error.response.data.message);
-        // }
+        const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
+        try{
+            let body = {
+                "idOffer":idOffer,
+                "tokenDto":{
+                    "token": token()
+                }
+            }
+            const response = await axios.post(`${baseUrl}/transaction/`,body)
+            if(response.status === 200){
+                console.log(response.data);
+                alert("Transación exitosa")
+            }else{
+                alert(e)
+                console.log(e);
+                console.log("BAD RETURN OFF SERVER TRANSACTION");
+            }
+        }catch(error){
+            console.log(error.response.data.message);
+        }
     }
 
     const activeCounterOffer = () =>{
@@ -301,7 +305,7 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
                         {
                             imgBookOfferted!=null
                             ?<div>
-                                <img src={`http://localhost:8080/images/${imgBookOfferted}`} onClick={selectImg}></img>
+                                <img src={`${baseUrl}/images/${imgBookOfferted}`} onClick={selectImg}></img>
                                 <h2>{`${priceProductOffer} $`}</h2>
                                 <h2>{`Estado : ${condition}`}</h2>
                             </div>
@@ -357,7 +361,7 @@ export function DetailMyPublications(){
     useEffect(()=>{
         const fetchProducts = async () =>{
             try{
-                const response = await axios.get(`http://localhost:8080/publication/${id}`)
+                const response = await axios.get(`${baseUrl}/publication/${id}`)
                 if(response.status === 200){
                     console.log(response.data);
                     setOnePublication(response.data)
@@ -374,7 +378,7 @@ export function DetailMyPublications(){
                      "idPublication":id,
                       "status":1
                 }
-                const response = await axios.post(`http://localhost:8080/offer/obtain-all-offers`,body)
+                const response = await axios.post(`${baseUrl}/offer/obtain-all-offers`,body)
                 if(response.status === 200){
                     console.log(response.data);
                     setOffers(response.data)

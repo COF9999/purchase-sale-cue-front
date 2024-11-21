@@ -3,6 +3,10 @@ import imgNotFound from "../../images/imageNotFound.jpg"
 import { Link } from "react-router-dom";
 import "../css/listProduct.css"
 import axios from "axios";
+import baseUrl from "../../hostConfig";
+
+
+// <img src={`http://localhost:8080/images/${imgProduct}`} alt="book-loaded" />
 
 function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgProduct}){
     const publicate = async () =>{
@@ -16,7 +20,7 @@ function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionPr
         }
        
         try{
-            const response = await axios.post("http://localhost:8080/publication/",body)
+            const response = await axios.post(`${baseUrl}/publication/`,body)
             if(response.status === 200){
                 console.log(response.data);
                 alert("Operación exitosa")
@@ -36,7 +40,7 @@ function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionPr
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`http://localhost:8080/images/${imgProduct}`} alt="book-loaded" />
+                   
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -72,7 +76,7 @@ export function Product(){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/product/select",body)
+                    const response = await axios.post(`${baseUrl}/product/select`,body)
                     if(response.status === 200){
                         SetProducts(response.data)
                         console.log(response.data);
@@ -116,3 +120,5 @@ export function Product(){
         </>
     )
 }
+
+// <img src={`https://img-cue-bucket.s3.us-east-2.amazonaws.com/${imgProduct}`} alt="book-loaded" />

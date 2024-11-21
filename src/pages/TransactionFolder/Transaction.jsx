@@ -2,6 +2,7 @@ import React,{useEffect,useRef,useState} from "react";
 import axios from "axios";
 import "../css/transaction.css"
 import iconCloseCommet from "../../images/icon-close-512.webp"
+import baseUrl from "../../hostConfig";
 
 
 function OverlayComment({idTransactionValue,activeOverlayComment,setActiveOverlayComment}){
@@ -39,7 +40,7 @@ function OverlayComment({idTransactionValue,activeOverlayComment,setActiveOverla
         }
 
          try{
-            const response = await axios.post("http://localhost:8080/commentary/",body)
+            const response = await axios.post(`${baseUrl}/commentary/`,body)
             if(response.status === 200){
                 alert("exitoso")
             }else{
@@ -106,7 +107,7 @@ function CardTransaction({id,nameProduct,descriptionProduct,priceProduct,conditi
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`http://localhost:8080/images/${img}`} alt="book-loaded" />
+                    <img src={`${baseUrl}/images/${img}`} alt="book-loaded" />
                 </div>
                 {
                     commentarySeller!=null
@@ -159,7 +160,7 @@ export function Transaction (){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/transaction/get-all",body)
+                    const response = await axios.post(`${baseUrl}/transaction/get-all`,body)
                     if(response.status === 200){
                         setTransactions(response.data)
                         console.log(response.data);

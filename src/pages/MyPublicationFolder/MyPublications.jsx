@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/myPublication.css"
+import baseUrl from "../../hostConfig";
 
 
 function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,statusPublication}){
@@ -29,7 +30,7 @@ function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,condi
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`http://localhost:8080/images/${imgPublication}`} alt="book-loaded" />
+                    <img src={`${baseUrl}/images/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -63,7 +64,7 @@ export function MyPublications(){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/publication/publicationsUser",body)
+                    const response = await axios.post(`${baseUrl}/publication/publicationsUser`,body)
                     if(response.status === 200){
                         SetPublications(response.data)
                     }else{

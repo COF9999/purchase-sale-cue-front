@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/overlayFilter.css"
+import baseUrl from "../../../hostConfig";
+
 
 export function BannerFilter({partFilter,setAllPublications}){
 
@@ -87,7 +89,7 @@ export function BannerFilter({partFilter,setAllPublications}){
         let body = multiConsult.current;
         console.log(multiConsult.current);
         try{
-            const response = await axios.post("http://localhost:8080/publication/multi-consult",body)
+            const response = await axios.post(`${baseUrl}/publication/multi-consult`,body)
             if(response.status === 200){
                 console.log(response.data);
                 setAllPublications(response.data)

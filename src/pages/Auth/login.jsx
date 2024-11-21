@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider';// Asegúrate de ajustar la ruta de importación
 import '../css/login.css'
+import baseUrl from "../../hostConfig";
 
 export const LoginContext = createContext()
 
@@ -59,7 +60,7 @@ export const Login = () => {
 
     try {
       // Envía los datos del formulario al servidor para iniciar sesión
-      const response = await axios.post('http://localhost:8080/user/auth', {
+      const response = await axios.post(`${baseUrl}/user/auth`, {
         "identification":username,
         password,
       });

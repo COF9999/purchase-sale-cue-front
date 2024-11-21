@@ -7,6 +7,10 @@ import filterSearch from "../../images/filter-search.png"
 import "../css/publications.css"
 import { OverlayFilter } from "./modules/OverlayFilter";
 import { localStorageFunction } from "../js/methodsLocalStorage";
+import baseUrl from "../../hostConfig";
+
+
+console.log(baseUrl);
 
 function CardPublications({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication}){
     return (
@@ -16,7 +20,7 @@ function CardPublications({id,nameProduct,descriptionProduct,priceProduct,condit
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner">
-                    <img src={`http://localhost:8080/images/${imgPublication}`} alt="book-loaded" />
+                    <img src={`${baseUrl}/images/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -128,7 +132,7 @@ export function Publication(){
     useEffect(()=>{
         const fetchProducts = async () =>{
                 try{
-                    const response = await axios.get("http://localhost:8080/publication/allPublications")
+                    const response = await axios.get(`${baseUrl}/publication/allPublications`)
                     if(response.status === 200){
                         setAllPublications(response.data)
                     }else{

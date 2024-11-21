@@ -2,6 +2,7 @@ import { useEffect, useState,useRef } from "react"
 import axios from "axios"
 import "../css/denunciation.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
+import baseUrl from "../../hostConfig";
 
 function Denunciations({userDenunciator,message}){
     return(
@@ -46,7 +47,7 @@ export function Profile(){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/user/my-points",body)
+                    const response = await axios.post(`${baseUrl}/user/my-points`,body)
                     if(response.status === 200){
                         setDataProfile(response.data)
                         console.log(response.data);
@@ -70,7 +71,7 @@ export function Profile(){
             }
 
             try{
-                const response = await axios.post("http://localhost:8080/denuciations/find-denunciats",body)
+                const response = await axios.post(`${baseUrl}/denuciations/find-denunciats`,body)
                 if(response.status === 200){
                     setDenunciations(response.data)
                     console.log(response.data);

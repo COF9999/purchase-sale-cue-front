@@ -3,6 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider'; // Asegúrate de ajustar la ruta de importación
 import "../css/register.css"
+import baseUrl from "../../hostConfig";
+
+
 export const Register = () => {
   const nameUser = useRef()
   const usernameUser = useRef()
@@ -25,7 +28,7 @@ export const Register = () => {
     const password = passwordUser.current.value
     try {
       // Envía los datos del formulario al servidor para el registro del usuario
-      const response = await axios.post('http://localhost:8080/user/register', {
+      const response = await axios.post(`${baseUrl}/user/register`, {
         name,
         username,
         email,

@@ -8,6 +8,25 @@ import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
+import baseUrl from "../../hostConfig";
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+
+
+
+const decodeJWT = ()=>{
+    const token = localStorageFunction()
+    const parts = token.split('.');
+  
+    if (parts.length !== 3) {
+      throw new Error('Invalid token format');
+    }
+  
+    // Decodificamos el payload de base64 a JSON
+    const payload = JSON.parse(atob(parts[1]));
+    return payload;
+}
+
 
 function ImgDetail({name,imgDetailPublication}){
     return(
@@ -17,7 +36,7 @@ function ImgDetail({name,imgDetailPublication}){
                     <h2>{name}</h2>
                 </div>
                 <div className="box-image-detail div-img">
-                     <img src={`http://localhost:8080/images/${imgDetailPublication}`} alt="#" />
+                     <img src={`${baseUrl}/images/${imgDetailPublication}`} alt="#" />
                 </div>
             </div>
         </>
@@ -36,7 +55,7 @@ function OptionProducts({id,name,price,funcOptionSelected,imgProductsOfferted}){
             funcOptionSelected(e,referenceSingleOption,referenceTitleObserver)
         }}>
         <div className="contenido-opcion">
-            <img src={`http://localhost:8080/images/${imgProductsOfferted}`} alt=""/>
+            <img src={`${baseUrl}/images/${imgProductsOfferted}`} alt=""/>
             <div className="textos" >
                 <p className="p-ocult">{id}</p>
                 <h2 className="titulo" ref={referenceTitleObserver}>{name}</h2>
@@ -71,7 +90,7 @@ function OfferDetail({id}){
 
         
         try{
-            const response = await axios.post(`http://localhost:8080/offer/`,body)
+            const response = await axios.post(`${baseUrl}/offer/`,body)
             if(response.status === 200){
                 alert("Oferta realizada con exito");
             }else{
@@ -105,7 +124,7 @@ function OfferDetail({id}){
                 }
 
                 try{
-                    const response = await axios.post("http://localhost:8080/product/select",body)
+                    const response = await axios.post(`${baseUrl}/product/select`,body)
                     if(response.status === 200){
                         setMyProductsOffer(response.data)
                     }else{
@@ -231,7 +250,7 @@ export function Overlay({idPublication,activeOverlay,changeVisorActiveOverlay}){
              }
         }
         try{
-            const response = await axios.post("http://localhost:8080/denuciations/",body)
+            const response = await axios.post(`${baseUrl}/denuciations/`,body)
             if(response.status === 200){
                 changeActiveOverlay()
             }else{
@@ -301,7 +320,7 @@ function CreateMessageChapt({idPublication,setSearhAgainFunction}){
         
 
         try{
-            const response = await axios.post(`http://localhost:8080/comments-publication/`,body)
+            const response = await axios.post(`${baseUrl}/comments-publication/`,body)
             if(response.status === 200){
                 setSearhAgainFunction()
             }else{
@@ -340,6 +359,9 @@ function CreateMessageChapt({idPublication,setSearhAgainFunction}){
     )
 }
 
+
+/*
+
 function DetailChapt({userInformation,message}){
 
 
@@ -375,7 +397,7 @@ function DetailChapt({userInformation,message}){
                const body =  {
                     "token": token
                }
-                const response = await axios.post('http://localhost:8080/security/token-is-valid',body)
+                const response = await axios.post(`${baseUrl}/security/token-is-valid`,body)
 
                 if(response.status === 200 && response.data){
                     if(userInformation.identification === decodeJWT(token).sub){
@@ -404,6 +426,7 @@ function DetailChapt({userInformation,message}){
     )
 }
 
+
 function Chapt({idPublication,setVisualizateContentChap}){
 
     const [chapt,setChapt] = useState([])
@@ -414,7 +437,7 @@ function Chapt({idPublication,setVisualizateContentChap}){
         
         const fetchProducts = async () =>{
             try{
-                const response = await axios.get(`http://localhost:8080/comments-publication/${idPublication}`)
+                const response = await axios.get(`${baseUrl}/comments-publication/${idPublication}`)
                 if(response.status === 200){
                     console.log(response.data);
                     setChapt(response.data)
@@ -433,14 +456,16 @@ function Chapt({idPublication,setVisualizateContentChap}){
    
 
     
-
+    
     const deactiveChap = () =>{
         setVisualizateContentChap(false)
     }
 
+    
     const setSearhAgainFunction = () =>{
         setSearchAgain(searchAgain+1)
     }
+    
     return(
         <div className="father-content-chapt">
             <div className="container-chapt">
@@ -474,6 +499,188 @@ function Chapt({idPublication,setVisualizateContentChap}){
     
 }
 
+*/
+
+
+///////////////////////----
+
+function CardMessage({message}){
+
+    const colorClasses = ["emerald-400",
+    "yellow-400"]
+  
+    let colorTextWriter;
+    let margin;
+    let bkgColor;
+  
+    if(decodeJWT()===message.userResponseDto.idUser){
+      colorTextWriter = colorClasses[0]
+      margin = "margin-right"
+      bkgColor = "green-cht-basic"
+    }else{
+      colorTextWriter = colorClasses[1]
+    }
+  
+    return(
+      <div className='wrapper-message'>
+          <div className={`message ${margin} ${bkgColor}`}>
+              <div className='info-writer'>
+                <p className={`text-writer ${colorTextWriter}`}>~ {message.userResponseDto.name}</p>
+              </div>
+              <div className='box-content-text-message'>
+                <p>{message.message}</p>
+              </div>
+          </div>
+      </div>
+     
+    )}
+  
+  function IterateCardMessage({chat,paramsUrl}){
+    if(Object.keys(chat).length === 0 || chat["commentResponseDto"].length === 0){
+      return
+    }
+  
+    return(
+      <Fragment>
+        {
+          chat.commentResponseDto.map(message=> <CardMessage
+            key={message.id}
+            paramsUrl={paramsUrl}
+            message={message}
+          />)
+        }
+      </Fragment>
+    )
+  }
+  
+  function BarSendMessage({sendMessage}){
+  
+    const textCampusRef = useRef()
+  
+    
+    const launchMessage = async ()=>{
+    
+        try{
+
+                const token = localStorageFunction()
+                
+                const body =  {
+                    "token": token
+                }
+                const response = await axios.post(`${baseUrl}/security/token-is-valid`,body)
+
+                if(response.status === 200 && response.data){
+                    if(userInformation.identification === decodeJWT().sub){
+                        refColorCard.current = "myComment"
+                    }
+                }else{
+                    
+                }
+            }catch(e){
+                localStorage.removeItem('token')
+            }
+      
+      sendMessage({
+        message: textCampusRef.current.value,
+        idUser: userInformation.identification
+      }
+      )
+    }
+  
+    return(
+      <div className='box-send-message box-send-message-1'>
+          <input ref={textCampusRef} type="text" />
+          <button onClick={()=> launchMessage()}>Enviar</button>
+      </div>
+      
+    )
+  }
+  
+   function App({setVisualizateContentChap,idPublication}) {
+    const paramsUrl = useParams()
+    const url = 'http://192.168.1.16:8080/chat-socket'
+    const [stompClient,setStompClient] = useState(null)
+    const [chat,setChat] = useState({})
+    const init = useRef(false)
+    const [sockJs,setSockJs] = useState(new SockJS(url))
+    
+    const initMessages = async ()=>{
+      if(init.current==false){
+        try{
+          const response = await axios.post(`http://192.168.1.16:8080/chat/list/${idPublication}`)
+          setChat(response.data)
+          console.log(response.data);
+          init.current = true
+        }catch(e){
+          console.log("Error",e);
+        }
+      }
+    }
+
+    const deactiveChap = () =>{
+        setVisualizateContentChap(false)
+    }
+  
+    useEffect(()=>{
+      initMessages()
+      const client = Stomp.over(sockJs);
+      
+      // Creamos la conexión al broker con la room
+      client.connect({},()=>{
+        client.subscribe(`/topic/${idPublication}`,(objMessage)=>{
+          const newMessageObj = JSON.parse(objMessage.body)
+          setChat((prevObjMessage)=>{
+            let instanceBefore = structuredClone(prevObjMessage)
+            instanceBefore.commentResponseDto.push(newMessageObj)
+            return instanceBefore
+          })
+        })
+      }, (error)=>{
+          console.log("Error Web Socket");
+      })
+  
+      setStompClient(client)
+  
+      return () => {
+        if (stompClient) {
+            stompClient.disconnect(() => {
+                console.log('Desconectado del WebSocket');
+            });
+        }
+      }
+    },[])
+  
+  
+    const sendMessage = (messageObj)=>{
+      if(stompClient.connect){
+        stompClient.send(`/app/chat/${idPublication}`,{},JSON.stringify(messageObj))
+      }
+    }
+  
+    return (
+      <Fragment>
+       <main className='main'>
+       <section className='section'>
+          <div className='panel panel-1'>
+            <div className='chat chat-1'>
+                <IterateCardMessage
+                  paramsUrl={paramsUrl}
+                  chat={chat}
+                />
+            </div>
+           <BarSendMessage
+              sendMessage={sendMessage}
+            />
+          </div>
+        </section>
+       </main>
+      </Fragment>    
+    )
+  }
+
+
+//////////////////////
+
 
 export function Detail(){
     const {id} = useParams()
@@ -485,7 +692,7 @@ export function Detail(){
     useEffect(()=>{
         const fetchProducts = async () =>{
             try{
-                const response = await axios.get(`http://localhost:8080/publication/${id}`)
+                const response = await axios.get(`${baseUrl}/publication/${id}`)
                 if(response.status === 200){
                    
                     setOnePublication(response.data)
@@ -557,7 +764,7 @@ export function Detail(){
 
             {
                 onePublication!=null && visualizateContentChap != false
-                ? <Chapt
+                ? <App
                 setVisualizateContentChap={setVisualizateContentChap}
                 idPublication={onePublication!=null?onePublication.id:null}
                 />
