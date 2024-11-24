@@ -2,10 +2,12 @@
     text-align: center;
     font-family: Arial, sans-serif;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
   
 .App-header {
-background-color: #282c34;
+background-color: rgb(30, 30, 227);
 padding: 20px;
 color: white;
 min-height: 10vh;
@@ -19,8 +21,10 @@ min-height: 10vh;
 main {
 text-align: left;
 margin: 0 auto;
+margin-top: 10px;
 max-width: 800px;
 min-height: 80vh;
+flex: 1;
 }
 
 h1, h2 {
@@ -44,11 +48,21 @@ a:hover {
 text-decoration: underline;
 }
 
+.div-recicle-img{
+    text-align: center;
+}
+
+.recicle-img{
+    width: 300px;
+    height: 300px;
+    text-align: center;
+}
+
 
 
 footer {
-background-color: #282c34;
-color: white;
+    background-color: rgb(30, 30, 227);
+    color: white;
 }
 
 

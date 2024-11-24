@@ -1,5 +1,5 @@
 .container-filter-publication-general{
-    background-color: aqua;
+    background-color: rgb(30, 30, 227);
     padding: 30px;
     display: flex;
     flex-direction: column;
@@ -10,7 +10,7 @@
 }
 
 .child{
-    background-color: rgba(18, 138, 208, 0.363);
+    background-color: #333;
     padding: 20px;
     width: 80%;
     text-align: center;
@@ -20,6 +20,11 @@
     border-radius: 5px;
 }
 
+
+.child p{
+    color: white;
+    margin-bottom: 2px;
+}
 .part-2-price-filter{
     display: flex;
     flex-direction: column;

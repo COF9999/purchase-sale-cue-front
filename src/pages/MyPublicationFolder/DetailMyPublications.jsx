@@ -4,7 +4,7 @@ import "../css/myPublicationDetail.css"
 import axios from "axios"
 import imgBook from "../../images/img-book.jpeg"
 import iconCloseCommet from "../../images/icon-close-512.webp"
-import baseUrl from "../../hostConfig"
+import {baseUrl, baseUrlS3 } from "../../hostConfig"
 
 
 
@@ -70,16 +70,19 @@ function OverlayCounterOffer({activeOverlayCounter,setActiveOverlayCounter,idOff
     )
 }
 
-function ImgDetail({name,price,condition,imgMyDetailMyPublication}){
+function ImgDetail({name,price,condition,imgMyDetailMyPublication,isCloudImage}){
+
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
+
     return(
         <>
             <div className="content-render-img-myPublication --render-div">
                 <div className="box-image-myPublication">
                     <div className="box-name-product-myPublication">
-                
                     </div>
-                     <img src={`${baseUrl}/images/${imgMyDetailMyPublication}`} alt="#" />
-                </div>
+                        
+                        <img src={`${routeImage}/images/${imgMyDetailMyPublication}`} alt="#" />
+                     </div>
                 <div className="box-description-publication">
                     <div>
                         <p>{name}</p>
@@ -120,6 +123,7 @@ function OfferDetail({idSearchProduct}){
     },[idSearchProduct])
 
 
+    const routeImage = productContent.isCloudImage?baseUrlS3:baseUrl
 
     return(
         <>
@@ -128,7 +132,7 @@ function OfferDetail({idSearchProduct}){
                     productContent!=null
                     ? <div className="box-offer">
                     <div>
-                        <img src={`${baseUrl}/images/${productContent.img}`} alt="" className="img-offer-detail"/>
+                        <img src={`${routeImage}/images/${productContent.img}`} alt="" className="img-offer-detail"/>
                     </div>
                    
                      </div>
@@ -139,13 +143,13 @@ function OfferDetail({idSearchProduct}){
                     productContent!=null
                     ?<div className="box-info-offer">
                     <div>
-                      {productContent.name}
+                       {`Nombre: ${productContent.name}`}
                     </div>
                     <div>
-                            {productContent.price}
+                            {`Precio: ${productContent.price}`}
                     </div>
                     <div>
-                        {productContent.description}
+                        {`Descripción: ${productContent.description}`}
                     </div>
                     
                     </div>
@@ -199,10 +203,6 @@ function CounterOfferDetail({description,status}) {
 }
 function CounterOffer({stateCounterOffer,counterOffer}){
 
-    console.log(stateCounterOffer);
-    
-
-   
 
     if(stateCounterOffer===false || counterOffer.length === 0){
         return
@@ -231,7 +231,15 @@ function CounterOffer({stateCounterOffer,counterOffer}){
     )
 }
 
-function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceProductOffer,idProduct,callBackinsertIdInProduct,imgBookOfferted,setIdOfferRef,setActiveOverlayCounter,counterOffer}){
+function InformationDetail({idOffer,nameOwner,
+    condition,owners,
+    priceOffer,priceProductOffer,
+    idProduct,callBackinsertIdInProduct,
+    imgBookOfferted,setIdOfferRef,
+    setActiveOverlayCounter
+    ,counterOffer,
+    isCloudImage
+}){
 
     const [stateCounterOfferInfo,setStateCounterOfferInfo] = useState(false)
 
@@ -294,6 +302,8 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
         setStateCounterOfferInfo(!stateCounterOfferInfo)
     }
 
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
+
     return(
         <>
             <div className="container-all-info-myPublication">
@@ -305,7 +315,7 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
                         {
                             imgBookOfferted!=null
                             ?<div>
-                                <img src={`${baseUrl}/images/${imgBookOfferted}`} onClick={selectImg}></img>
+                                <img src={`${routeImage}/images/${imgBookOfferted}`} onClick={selectImg}></img>
                                 <h2>{`${priceProductOffer} $`}</h2>
                                 <h2>{`Estado : ${condition}`}</h2>
                             </div>
@@ -315,18 +325,18 @@ function InformationDetail({idOffer,nameOwner,condition,owners,priceOffer,priceP
                     <div>
                         <h2>{priceOffer!=null?`Valor ofertado \n ${priceOffer} $`: ""}</h2>
                     </div>
-                    <div>
-                        
+                    <div className="group-actions-offer">
+                            <div>
+                                <h2 className="accept-offer" onClick={acceptOffer}>Aceptar</h2>
+                            </div>
+                            <div>
+                                <h2 className="deny-offer">Rechazar</h2>
+                            </div>
+                            <div>
+                                <h2 className="counter-offer" onClick={activeCounterOffer}>ContraOfertar</h2>
+                            </div>
                     </div>
-                    <div>
-                        <h2 className="accept-offer" onClick={acceptOffer}>Aceptar</h2>
-                    </div>
-                    <div>
-                        <h2 className="deny-offer">Rechazar</h2>
-                    </div>
-                    <div>
-                        <h2 className="counter-offer" onClick={activeCounterOffer}>ContraOfertar</h2>
-                    </div>
+                    
                 </div>
                 <div className="div-counter-offer-icon" onClick={activeStateCounterOfferInfo}>
                     <div>
@@ -380,7 +390,6 @@ export function DetailMyPublications(){
                 }
                 const response = await axios.post(`${baseUrl}/offer/obtain-all-offers`,body)
                 if(response.status === 200){
-                    console.log(response.data);
                     setOffers(response.data)
                 }else{
                     console.log("BAD RETURN OFF SERVER");
@@ -412,6 +421,7 @@ export function DetailMyPublications(){
                                  price={onePublication.productResponse.price}
                                  condition={onePublication.productResponse.condition}
                                  imgMyDetailMyPublication={onePublication.productResponse.img}
+                                 isCloudImage={onePublication.productResponse.isCloudImage}
                                 />
                                 :""
                             }
@@ -427,16 +437,21 @@ export function DetailMyPublications(){
                             {
                                
                                 offers.map((item,index)=>{
+
+                                    const productOffertedResponse = item.productOffertedResponse
+
+                                  
                                     return <InformationDetail
                                     key={index}
                                     idOffer={item.id}
                                     nameOwner={item.userInformation.name}
                                     priceOffer={item.offerValue}
-                                    priceProductOffer={item.productOffertedResponse!=null?item.productOffertedResponse.price:""}
-                                    condition={item.productOffertedResponse!=null?item.productOffertedResponse.condition:""}
-                                    idProduct={item.productOffertedResponse!=null?item.productOffertedResponse.id:""}
+                                    priceProductOffer={productOffertedResponse!=null?productOffertedResponse.price:""}
+                                    condition={productOffertedResponse!=null?productOffertedResponse.condition:""}
+                                    idProduct={productOffertedResponse!=null?productOffertedResponse.id:""}
                                     callBackinsertIdInProduct={insertIdInProduct}
-                                    imgBookOfferted={item.productOffertedResponse!=null?item.productOffertedResponse.img:null}
+                                    imgBookOfferted={productOffertedResponse!=null?productOffertedResponse.img:null}
+                                    isCloudImage={productOffertedResponse!=null ? productOffertedResponse.isCloudImage:false}
                                     setIdOfferRef={setIdOfferRef}
                                     setActiveOverlayCounter={setActiveOverlayCounter}
                                     counterOffer={item.counterOfferResponseDtoList}

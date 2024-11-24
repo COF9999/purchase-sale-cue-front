@@ -3,12 +3,15 @@ import imgNotFound from "../../images/imageNotFound.jpg"
 import { Link } from "react-router-dom";
 import "../css/listProduct.css"
 import axios from "axios";
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../hostConfig";
 
 
 // <img src={`http://localhost:8080/images/${imgProduct}`} alt="book-loaded" />
 
-function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgProduct}){
+function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgProduct,isCloudImage}){
+
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
+
     const publicate = async () =>{
         const token = ()=> localStorage.getItem('token')!=null?localStorage.getItem('token'):""
 
@@ -40,7 +43,7 @@ function CardProduct({id,nameProduct,descriptionProduct,priceProduct,conditionPr
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                   
+                     <img src={`${routeImage}/images/${imgProduct}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -108,6 +111,7 @@ export function Product(){
                              descriptionProduct={item.description}
                              priceProduct={item.price}
                              conditionProduct={item.condition}
+                             isCloudImage={item.isCloudImage}
                             >
                             </CardProduct>
                             )

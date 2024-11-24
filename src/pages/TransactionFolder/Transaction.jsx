@@ -2,7 +2,7 @@ import React,{useEffect,useRef,useState} from "react";
 import axios from "axios";
 import "../css/transaction.css"
 import iconCloseCommet from "../../images/icon-close-512.webp"
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../hostConfig";
 
 
 function OverlayComment({idTransactionValue,activeOverlayComment,setActiveOverlayComment}){
@@ -86,18 +86,63 @@ function OverlayComment({idTransactionValue,activeOverlayComment,setActiveOverla
 function Comment({user,commentary,valoration}){
     return(
         <div className="box-inner comment">
-                    <h3>Comentario {user}</h3>
+                    <h3>{user}</h3>
                     <p>{commentary}</p>
                     <p><label>Valoración : </label>{valoration}</p>
         </div>
     )
 }
+function GroupComments({commentarySeller,commentaryBidder,activeValoration}){
+    
 
-function CardTransaction({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,img,commentarySeller,commentaryBidder,setActiveOverlayComment,setIdTransactionRef}){
+    if(activeValoration===false){
+        return
+    }
+
+    return(
+           <>
+
+           {
+                commentarySeller!=null
+                ? <Comment
+                user={`Vendedor: ${commentarySeller.nameUser}`}
+                commentary={commentarySeller.messageValoration}
+                valoration={commentarySeller.valoration}
+                />
+                :null
+           }
+           {
+            commentaryBidder!=null
+            ? <Comment
+            user={`Comprador: ${commentaryBidder.nameUser}`}
+            commentary={commentaryBidder.messageValoration}
+            valoration={commentaryBidder.valoration}
+            />
+            :null
+           }
+           </>
+    )
+}
+
+function CardTransaction({id,nameProduct,
+    descriptionProduct,priceProduct,
+    conditionProduct,img,
+    commentarySeller,commentaryBidder,
+    setActiveOverlayComment,setIdTransactionRef,
+    isCloudImage
+    }){
+
+    const [activeValoration,setActiveValoration] = useState(false)
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
 
     const launchValoration = () =>{
         setActiveOverlayComment(true)
         setIdTransactionRef(id)
+    }
+
+
+    const changeValueActiveValoration = ()=>{
+        setActiveValoration(!activeValoration);
     }
 
     return (
@@ -107,29 +152,14 @@ function CardTransaction({id,nameProduct,descriptionProduct,priceProduct,conditi
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${baseUrl}/images/${img}`} alt="book-loaded" />
+                    <img src={`${routeImage}/images/${img}`} alt="book-loaded" />
                 </div>
-                {
-                    commentarySeller!=null
-                    ? <Comment
-                    user="Vendedor"
-                    commentary={commentarySeller.messageValoration}
-                    valoration={commentarySeller.valoration}
-                    />
-                    
-                    :""
-                }
-                {
-                    commentaryBidder!=null
-                    ? <Comment
-                    user="Comprador"
-                    commentary={commentaryBidder.messageValoration}
-                    valoration={commentaryBidder.valoration}
-                    />
-                    :""
-                }
-               
-               
+                <div className="div-icon-show-valorations" onClick={changeValueActiveValoration}>▼</div>
+                <GroupComments
+                    commentarySeller={commentarySeller}
+                    commentaryBidder={commentaryBidder}
+                    activeValoration={activeValoration}
+                />             
                 <div className="box-inner">
                     <div className="box-offerter">
                          <button onClick={launchValoration}>Valorar</button>
@@ -194,6 +224,7 @@ export function Transaction (){
                              commentaryBidder={item.commentaryBidder}
                              setActiveOverlayComment={setActiveOverlayComment}
                              setIdTransactionRef={setIdTransactionRef}
+                             isCloudImage={item.offerResponse.publicationData.productResponse.isCloudImage}
                             //  descriptionProduct={item.productResponse.description}
                             //  priceProduct={item.productResponse.price}
                             //  conditionProduct={item.productResponse.condition}

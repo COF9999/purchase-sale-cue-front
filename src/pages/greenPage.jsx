@@ -1,6 +1,7 @@
 import React from "react";
 import "./css/greenPage.css"
-import recycle from "../images/recycle.jpg"
+
+
 export function StaticGreenPage(){
     return(
             <div className="App">
@@ -67,8 +68,8 @@ export function StaticGreenPage(){
                       </a>
                     </li>
                   </ul>
-                  <div>
-                    <img src={recycle} alt="" className="recicle-img"/>
+                  <div className="div-recicle-img">
+                    <img src={`https://vimarenvironment.com/wp-content/uploads/2023/09/economia-circular.jpg`} alt="" className="recicle-img"/>
                   </div>
                 </section>
               </main>

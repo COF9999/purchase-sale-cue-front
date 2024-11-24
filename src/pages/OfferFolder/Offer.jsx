@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios"
 import "../css/offer.css"
 import { localStorageFunction } from "../js/methodsLocalStorage.js";
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../hostConfig";
 
 
 function CounterOffer({idCounterOffer,description,status,setIdCounterRef}){
@@ -130,12 +130,18 @@ function UserHasStarEventOffer({idOffer,idCounterOffer}){
     )
 }
 
-function CardMyOffer({id,nameProductRequired,productExchanged,priceOffer,imgProductRequired,statusOffer,counterOffer}){
+function CardMyOffer({id,nameProductRequired,
+    productExchanged,priceOffer,
+    imgProductRequired,statusOffer,
+    counterOffer,
+    isCloudImage
+}){
 
     const colorBox = useRef()
     const messageStatus = useRef()
     const [activeCounterOffer,setActiveCounterOffer] = useState(false)
     const idCounterOffer = useRef("")
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
 
     
 
@@ -173,12 +179,12 @@ function CardMyOffer({id,nameProductRequired,productExchanged,priceOffer,imgProd
                     <h2>{nameProductRequired}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${baseUrl}/images/${imgProductRequired}`} alt="book-loaded" />
+                    <img src={`${routeImage}/images/${imgProductRequired}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                     {
-                        statusOffer===1
-                        ?<p>{`Esperando el producto ${productExchanged}`}</p>
+                        statusOffer ===1 && productExchanged!=null
+                        ?<p>{`Esperando cambiar por ${productExchanged}`}</p>
                         :""
                     }
                     {
@@ -218,7 +224,7 @@ function CardMyOffer({id,nameProductRequired,productExchanged,priceOffer,imgProd
                
                
                 <div className="box-inner">
-                    <p>{`Valor Oferta  ${priceOffer==null?"no especificado en la compra":priceOffer}`}</p>
+                    <p>{`Valor Oferta  ${priceOffer==null?"no incluido en la compra":priceOffer}`}</p>
                 </div>
             </div>
         </div>
@@ -241,10 +247,7 @@ export function Offer(){
                 try{
                     const response = await axios.post(`${baseUrl}/offer/my-offers`,body)
                     if(response.status === 200){
-                        console.log("respuesta");
-                        console.log(response.data);
                         setMyOffer(response.data)
-                        
                     }else{
                         console.log("BAD RETURN OFF SERVER");
                     }
@@ -267,6 +270,7 @@ export function Offer(){
                                 id={item.id}
                                 nameProductRequired={item.publicationData.productResponse.name}
                                 imgProductRequired={item.publicationData.productResponse.img}
+                                isCloudImage={item.publicationData.productResponse.isCloudImage}
                                 productExchanged={item.productOffertedResponse!=null ?item.productOffertedResponse.name:null}
                                 priceOffer={item.offerValue}
                                 statusOffer={item.state}

@@ -9,18 +9,25 @@ import "./css/resize.css"
 
 function NavHeader({valueNavHeader}){
 
+    const [selectOptionNav,setSelectOptionNav] = useState()
+    const styleSelectOption = "sweet-grey"
+
     if(valueNavHeader==false){
         return
     }
 
+    const changeSelectValueOption = (key)=>{
+        setSelectOptionNav(key)
+    }
+
     return(
         <nav className={`nav-options-pages`}>
-                    <Link to="/publications">Publicaciones</Link>
-                    <Link to="/my-publications">Mis publicaciones</Link>
-                    <Link to={"/offer"}>Mis Ofertas</Link>
-                    <Link to="/my-products">Mis productos</Link>
-                    <Link to={"/transacciones"}>Transacciones</Link>
-                    <Link to="/green-page" target="_blank" rel="noopener">Economia circular</Link>
+                    <Link to="/publications" className={selectOptionNav===1?styleSelectOption:""} onClick={()=> changeSelectValueOption(1)}>Publicaciones</Link>
+                    <Link to="/my-publications" className={selectOptionNav===2?styleSelectOption:""} onClick={()=> changeSelectValueOption(2)}>Mis publicaciones</Link>
+                    <Link to={"/offer"} className={selectOptionNav===3?styleSelectOption:""} onClick={()=> changeSelectValueOption(3)}>Mis Ofertas</Link>
+                    <Link to="/my-products" className={selectOptionNav===4?styleSelectOption:""} onClick={()=> changeSelectValueOption(4)}>Mis productos</Link>
+                    <Link to={"/transacciones"} className={selectOptionNav===5?styleSelectOption:""} onClick={()=> changeSelectValueOption(5)}>Transacciones</Link>
+                    <Link to="/green-page" target="_blank" rel="noopener" className={selectOptionNav===6?styleSelectOption:""} onClick={()=> changeSelectValueOption(6)}>Economia circular</Link>
          </nav>
     )
 }

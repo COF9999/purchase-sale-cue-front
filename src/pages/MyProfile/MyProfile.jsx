@@ -2,7 +2,7 @@ import { useEffect, useState,useRef } from "react"
 import axios from "axios"
 import "../css/denunciation.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
-import baseUrl from "../../hostConfig";
+import {baseUrl} from "../../hostConfig";
 
 function Denunciations({userDenunciator,message}){
     return(

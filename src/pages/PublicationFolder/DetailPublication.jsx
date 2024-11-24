@@ -2,17 +2,16 @@ import { useParams } from "react-router-dom"
 import reportIcon from "../../images/report-icon.png"
 import closeIconReport from "../../images/icon-close-512.webp"
 import iconChat from "../../images/icon-chat.png"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, Fragment  } from "react"
 import iconSendChat from "../../images/icon-send-chat.png"
 import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlMicroComment,baseUrlS3} from "../../hostConfig";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
-
-
+import "./css/chat.css"
 
 const decodeJWT = ()=>{
     const token = localStorageFunction()
@@ -28,7 +27,10 @@ const decodeJWT = ()=>{
 }
 
 
-function ImgDetail({name,imgDetailPublication}){
+function ImgDetail({name,imgDetailPublication,isCloudImage}){
+
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
+
     return(
         <>
             <div className="content-render-img-detail">
@@ -36,7 +38,7 @@ function ImgDetail({name,imgDetailPublication}){
                     <h2>{name}</h2>
                 </div>
                 <div className="box-image-detail div-img">
-                     <img src={`${baseUrl}/images/${imgDetailPublication}`} alt="#" />
+                     <img src={`${routeImage}/images/${imgDetailPublication}`} alt="#" />
                 </div>
             </div>
         </>
@@ -44,18 +46,20 @@ function ImgDetail({name,imgDetailPublication}){
 }
 
 
-function OptionProducts({id,name,price,funcOptionSelected,imgProductsOfferted}){
+function OptionProducts({id,name,price,funcOptionSelected,imgProductsOfferted,isCloudImage}){
 
     const referenceSingleOption = useRef()
 
     const referenceTitleObserver = useRef()
+
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
 
     return(
         <a href="#" className="opcion" ref={referenceSingleOption} onClick={(e)=>{
             funcOptionSelected(e,referenceSingleOption,referenceTitleObserver)
         }}>
         <div className="contenido-opcion">
-            <img src={`${baseUrl}/images/${imgProductsOfferted}`} alt=""/>
+            <img src={`${routeImage}/images/${imgProductsOfferted}`} alt=""/>
             <div className="textos" >
                 <p className="p-ocult">{id}</p>
                 <h2 className="titulo" ref={referenceTitleObserver}>{name}</h2>
@@ -169,6 +173,7 @@ function OfferDetail({id}){
                                          price={item.price}
                                          funcOptionSelected={optionSelected}
                                          imgProductsOfferted={item.img}
+                                         isCloudImage={item.isCloudImage}
                                         >
                                         </OptionProducts>
                                     )
@@ -292,240 +297,40 @@ export function Overlay({idPublication,activeOverlay,changeVisorActiveOverlay}){
 
 
 
-
-
-function CreateMessageChapt({idPublication,setSearhAgainFunction}){
-
-    const textAreaRef = useRef()
-
-    const launchCreateMessage = async () =>{
-
-        const valueTextArea = textAreaRef.current.textContent
-
-        console.log(valueTextArea);
-        
-        if(valueTextArea=="" || valueTextArea == undefined){
-            alert("Llena el campo de texto para chatear")
-            return
-        }
-
-        let body={
-            "message":valueTextArea, 
-            "tokenDto":{
-                "token": localStorageFunction()
-            },
-            "idPublication": idPublication
-        }
-
-        
-
-        try{
-            const response = await axios.post(`${baseUrl}/comments-publication/`,body)
-            if(response.status === 200){
-                setSearhAgainFunction()
-            }else{
-                console.log("BAD RETURN OFF SERVER");
-            }
-        }catch(e){
-            console.log("Internal Server Error",e);
-        }
-    }
-
-    return(
-        <div className="wrapper-chapt">
-            <div className="chat-tab-1">
-                <div className="data-content-input">
-                    <div 
-                        className="campus-text content-tab-1"
-                        aria-placeholder="Escribe un mensaje" 
-                        contentEditable="true"
-                    type="text" ref={textAreaRef} 
-                    >
-                      
-                    </div>
-                </div>
-               
-                <div className="div-btn-send-chap content-tab-1">
-                    <div>
-                        <div>
-                            <img src={iconSendChat} onClick={launchCreateMessage} className="btn-send-message-chap"/>
-                        
-                        </div>
-                    </div>
-                </div>
-            </div>
-           
-        </div>
-    )
-}
-
-
-/*
-
-function DetailChapt({userInformation,message}){
-
-
-    const refColorCard = useRef("friendComment")
-
-    if(userInformation==null){
-        return
-    }
-
-    const decodeJWT = (token)=>{
-        const parts = token.split('.');
-      
-        if (parts.length !== 3) {
-          throw new Error('Invalid token format');
-        }
-      
-        // Decodificamos el payload de base64 a JSON
-        const payload = JSON.parse(atob(parts[1]));
-      
-        return payload;
-    }
-
-
-    
-
-    useEffect(()=>{
-        const consultData = async ()=>{
-
-            try{
-
-              const token = localStorageFunction()
-                
-               const body =  {
-                    "token": token
-               }
-                const response = await axios.post(`${baseUrl}/security/token-is-valid`,body)
-
-                if(response.status === 200 && response.data){
-                    if(userInformation.identification === decodeJWT(token).sub){
-                       refColorCard.current = "myComment"
-                    }
-                }else{
-                    
-                }
-            }catch(e){
-                localStorage.removeItem('token')
-            }
-        }
-        consultData()
-    },[])
- 
-
-    return(
-        <div className={`cardDetailChapt ${refColorCard.current}`}>
-            <div>
-                <p>~{userInformation.name}</p>
-            </div>
-            <div>
-                {message}
-            </div>
-        </div>
-    )
-}
-
-
-function Chapt({idPublication,setVisualizateContentChap}){
-
-    const [chapt,setChapt] = useState([])
-
-    const [searchAgain,setSearchAgain] = useState(0)
-
-    useEffect(()=>{
-        
-        const fetchProducts = async () =>{
-            try{
-                const response = await axios.get(`${baseUrl}/comments-publication/${idPublication}`)
-                if(response.status === 200){
-                    console.log(response.data);
-                    setChapt(response.data)
-                    
-                }else{
-                    console.log("BAD RETURN OFF SERVER");
-                }
-            }catch(e){
-                console.log(e);
-                console.log("Internal Server Error");
-            }
-        }
-        fetchProducts()
-    },[searchAgain])
-
-   
-
-    
-    
-    const deactiveChap = () =>{
-        setVisualizateContentChap(false)
-    }
-
-    
-    const setSearhAgainFunction = () =>{
-        setSearchAgain(searchAgain+1)
-    }
-    
-    return(
-        <div className="father-content-chapt">
-            <div className="container-chapt">
-                        <div className="all-chapts">
-                            {
-                                chapt.length>0
-                                ?chapt.map((item,index)=>{
-                                    return <DetailChapt
-                                        key={index}
-                                        message={item.message}
-                                        userInformation={item.userInformation}
-                                    ></DetailChapt>
-                                })
-                                :""
-                            }
-                        </div>
-                        <div className="first-content-chapt">
-                                <CreateMessageChapt
-                                    setSearhAgainFunction={setSearhAgainFunction}
-                                    idPublication={idPublication}
-                                />
-                        </div>
-            </div>
-                        <div className="div-close-icon" onClick={deactiveChap}>
-                                <div>
-                                    <img src={closeIconReport} alt="" />
-                                </div>
-                        </div>
-        </div>
-    )
-    
-}
-
-*/
-
-
 ///////////////////////----
 
-function CardMessage({message}){
+function CardMessage({message,idUserToken,colorPalet}){
 
-    const colorClasses = ["emerald-400",
-    "yellow-400"]
-  
     let colorTextWriter;
     let margin;
     let bkgColor;
+
   
-    if(decodeJWT()===message.userResponseDto.idUser){
-      colorTextWriter = colorClasses[0]
+    if(idUserToken==message.userResponseDto.idUser){
+      colorTextWriter = colorPalet[0].style
+      colorPalet[0].value = true
+      colorPalet[0].owner = message.userResponseDto.idUser
       margin = "margin-right"
       bkgColor = "green-cht-basic"
     }else{
-      colorTextWriter = colorClasses[1]
+      for(let i = 1; i<Object.keys(colorPalet).length-1;i++){ 
+        if(colorPalet[i].owner== message.userResponseDto.idUser){
+            colorTextWriter = colorPalet[i].style
+            break
+        }else if(colorPalet[i].value === false){
+            colorTextWriter = colorPalet[i].style;
+            colorPalet[i].value = true;
+            colorPalet[i].owner = message.userResponseDto.idUser
+            break
+        }
+      }
     }
   
     return(
-      <div className='wrapper-message'>
-          <div className={`message ${margin} ${bkgColor}`}>
-              <div className='info-writer'>
-                <p className={`text-writer ${colorTextWriter}`}>~ {message.userResponseDto.name}</p>
+      <div className='wrapper-message-chat-socket'>
+          <div className={`message-chat-socket ${margin} ${bkgColor}`}>
+              <div className='info-writer-chat-socket'>
+                <p className={`text-writer-chat-socket ${colorTextWriter}`}>~ {message.userResponseDto.name}</p>
               </div>
               <div className='box-content-text-message'>
                 <p>{message.message}</p>
@@ -533,33 +338,91 @@ function CardMessage({message}){
           </div>
       </div>
      
-    )}
-  
-  function IterateCardMessage({chat,paramsUrl}){
-    if(Object.keys(chat).length === 0 || chat["commentResponseDto"].length === 0){
-      return
-    }
-  
-    return(
-      <Fragment>
-        {
-          chat.commentResponseDto.map(message=> <CardMessage
-            key={message.id}
-            paramsUrl={paramsUrl}
-            message={message}
-          />)
-        }
-      </Fragment>
+
     )
-  }
+}
   
-  function BarSendMessage({sendMessage}){
+function IterateCardMessage({chat,idUserToken}){
+
+const colorClassesRef = useRef(
+    {
+        "0":{
+            "style": "emerald-400",
+            "value": false,
+            "owner":""
+        },
+        
+        "1": {
+            "style": "yellow-400",
+            "value": false,
+            "owner":""
+        },
+    
+    
+        "2": {
+            "style": "blue-400",
+            "value": false,
+            "owner":""
+        },
+    
+    
+        "3": {
+            "style": "purple-400",
+            "value": false,
+            "owner":""
+        },
+    
+    
+        "4": {
+            "style": "pink-400",
+            "value": false,
+            "owner":""
+        },
+    
+    
+        "5": {
+            "style": "orange-400",
+            "value": false,
+            "owner":""
+        },
+    
+    
+        "6": {
+            "style": "red-400",
+            "value": false,
+            "owner":""
+        }
+    }
+
+)
+
+
+
+if(Object.keys(chat).length === 0 || chat["commentResponseDto"].length === 0){
+    return
+}
+
+
+return(
+    <Fragment>
+    {
+        chat.commentResponseDto.map(message=> <CardMessage
+        colorPalet={colorClassesRef.current}
+        key={message.id}
+        message={message}
+        idUserToken={idUserToken}
+        />)
+    }
+    </Fragment>
+)
+}
   
+function BarSendMessage({idUserToken,sendMessage}){
+
     const textCampusRef = useRef()
-  
-    
+
     const launchMessage = async ()=>{
-    
+
         try{
 
                 const token = localStorageFunction()
@@ -569,45 +432,48 @@ function CardMessage({message}){
                 }
                 const response = await axios.post(`${baseUrl}/security/token-is-valid`,body)
 
-                if(response.status === 200 && response.data){
-                    if(userInformation.identification === decodeJWT().sub){
-                        refColorCard.current = "myComment"
-                    }
-                }else{
+                // if(response.status === 200 && response.data){
+                //     if(userInformation.identification === decodeJWT().sub){
+                //         refColorCard.current = "myComment"
+                //     }
+                // }else{
                     
-                }
+                // }
             }catch(e){
                 localStorage.removeItem('token')
             }
-      
-      sendMessage({
+        
+        
+        
+        sendMessage({
         message: textCampusRef.current.value,
-        idUser: userInformation.identification
-      }
-      )
+        idUser: idUserToken
+        },textCampusRef
+        )
     }
+
+return(
+    <div className='box-send-message-chat-socket box-send-message-1'>
+        <input ref={textCampusRef} type="text" />
+        <button onClick={()=> launchMessage()}>Enviar</button>
+    </div>
+    
+)
+}
   
-    return(
-      <div className='box-send-message box-send-message-1'>
-          <input ref={textCampusRef} type="text" />
-          <button onClick={()=> launchMessage()}>Enviar</button>
-      </div>
-      
-    )
-  }
-  
-   function App({setVisualizateContentChap,idPublication}) {
-    const paramsUrl = useParams()
-    const url = 'http://192.168.1.16:8080/chat-socket'
+function App({setVisualizateContentChap,idPublication,idUserToken}) {
+    const url = `${baseUrlMicroComment}/chat-socket`
     const [stompClient,setStompClient] = useState(null)
     const [chat,setChat] = useState({})
     const init = useRef(false)
     const [sockJs,setSockJs] = useState(new SockJS(url))
+    const refInputText = useRef()
+    const scrollableRef = useRef(null);
     
     const initMessages = async ()=>{
       if(init.current==false){
         try{
-          const response = await axios.post(`http://192.168.1.16:8080/chat/list/${idPublication}`)
+          const response = await axios.post(`${baseUrlMicroComment}/chat/list/${idPublication}`)
           setChat(response.data)
           console.log(response.data);
           init.current = true
@@ -625,6 +491,8 @@ function CardMessage({message}){
       initMessages()
       const client = Stomp.over(sockJs);
       
+      client.debug = () => {};
+
       // Creamos la conexión al broker con la room
       client.connect({},()=>{
         client.subscribe(`/topic/${idPublication}`,(objMessage)=>{
@@ -634,7 +502,8 @@ function CardMessage({message}){
             instanceBefore.commentResponseDto.push(newMessageObj)
             return instanceBefore
           })
-        })
+          refInputText.current.value = "";
+        },{idPublication: idPublication})
       }, (error)=>{
           console.log("Error Web Socket");
       })
@@ -649,34 +518,52 @@ function CardMessage({message}){
         }
       }
     },[])
+
+    useEffect(()=>{
+        const scrollableElement = scrollableRef.current;        
+        if (scrollableElement) {
+          scrollableElement.scrollTop = scrollableElement.scrollHeight;
+        }
+    },[chat])
   
   
-    const sendMessage = (messageObj)=>{
-      if(stompClient.connect){
-        stompClient.send(`/app/chat/${idPublication}`,{},JSON.stringify(messageObj))
-      }
+    const sendMessage = (messageObj,refInput)=>{
+      try{
+        if(stompClient.connect){
+            stompClient.send(`/app/chat/${idPublication}`,{},JSON.stringify(messageObj))
+            refInputText.current = refInput.current
+          }
+      }catch(e){
+            console.log(e);
+      } 
+      
     }
   
     return (
       <Fragment>
-       <main className='main'>
-       <section className='section'>
-          <div className='panel panel-1'>
-            <div className='chat chat-1'>
-                <IterateCardMessage
-                  paramsUrl={paramsUrl}
-                  chat={chat}
-                />
-            </div>
-           <BarSendMessage
-              sendMessage={sendMessage}
-            />
-          </div>
-        </section>
-       </main>
+       <div className='main-chat-socket'>
+                <section className='section-chat-socket'>
+                    <div className='panel-chat-socket panel-1' >
+                        <div className='chat-chat-socket chat-1 scrollable' ref={scrollableRef}>
+                            <IterateCardMessage
+                            chat={chat}
+                            idUserToken={idUserToken}
+                            />
+                        </div>
+                     <BarSendMessage
+                         sendMessage={sendMessage}
+                         idUserToken={idUserToken}
+                    />
+                    </div>
+                    <div onClick={()=>setVisualizateContentChap(false)} className="closeChat"> X
+                    </div>
+            </section>
+       </div>
       </Fragment>    
     )
   }
+
+  
 
 
 //////////////////////
@@ -686,8 +573,8 @@ export function Detail(){
     const {id} = useParams()
     const [onePublication,setOnePublication] = useState(null) 
     const [visualizationOverlay,setVisualizationOverlay] = useState(null)
-    
     const [visualizateContentChap,setVisualizateContentChap] = useState(false)
+    const idUserToken = decodeJWT().sub
 
     useEffect(()=>{
         const fetchProducts = async () =>{
@@ -723,10 +610,11 @@ export function Detail(){
                                 <ImgDetail 
                                     name={onePublication.productResponse.name}
                                     imgDetailPublication={onePublication.productResponse.img}
-                                >
+                                    isCloudImage={onePublication.productResponse.isCloudImage}
+                                />
                                     
-                                </ImgDetail>
-                                <OfferDetail id={onePublication.id}></OfferDetail>
+                               
+                                <OfferDetail id={onePublication.id}/>
                         </div>
                         <div className="container-information-detail">
                             <InformationDetail
@@ -748,8 +636,6 @@ export function Detail(){
                                                 <img src={iconChat} alt="Icon-Chat"/>
                                             </div>
                                     </div>
-                               
-                               
                              </div>
                             
                         </div>
@@ -767,6 +653,7 @@ export function Detail(){
                 ? <App
                 setVisualizateContentChap={setVisualizateContentChap}
                 idPublication={onePublication!=null?onePublication.id:null}
+                idUserToken={idUserToken}
                 />
                 :""
             }        

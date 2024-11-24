@@ -50,6 +50,10 @@
     align-items: center;
 }
 
+.div-icon-show-valorations{
+    font-size: 1.4em;
+    width: 100%;
+}
 .status-my-transaction{
     text-align: center;
     font-weight: bold;

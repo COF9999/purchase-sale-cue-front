@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthProvider'; // Asegúrate de ajustar la ruta de importación
 import "../css/register.css"
-import baseUrl from "../../hostConfig";
+import {baseUrl} from "../../hostConfig";
 
 
 export const Register = () => {

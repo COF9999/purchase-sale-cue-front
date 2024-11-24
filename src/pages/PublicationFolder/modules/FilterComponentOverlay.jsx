@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/filterCompenentOverlay.css"
-import baseUrl from "../../../hostConfig";
+import {baseUrl} from "../../../hostConfig";
 
 export function BannerFilter({partFilter,setAllPublications,setActiveOverlayFilter}){
 
@@ -145,7 +145,7 @@ export function BannerFilter({partFilter,setAllPublications,setActiveOverlayFilt
         
         
         <div className="menu container-price child" onClick={(e)=> filterCategory(e,menuPriceVisible,(menu) => setMenuPriceVisible(menu))}>
-            <p> Filter price</p>
+            <p>Precio</p>
             <div className={`part-2-price-filter ${ menuPriceVisible ? '' : 'active'}`} id="price-menu">
                 <div className="inner-price-filter">
                     <input  ref={inputPriceMinimum} type="number" placeholder="Min Price"/>
@@ -158,7 +158,7 @@ export function BannerFilter({partFilter,setAllPublications,setActiveOverlayFilt
         </div>
         
         <div className="menu container-valoration child" onClick={(e)=> filterCategory(e,menuValorationVisible,(menu) => setMenuValorationVisible(menu))}>
-            <p>Filter Condition</p>
+            <p>Condición</p>
             <div className={`part-2-valoration-filter  ${ menuValorationVisible? '' : 'active'}`} id="valoration-menu">
                 <div className="inner-box-valoration">
                      <input ref={inputConditionMinimum} type="number" placeholder="Valoration"/>

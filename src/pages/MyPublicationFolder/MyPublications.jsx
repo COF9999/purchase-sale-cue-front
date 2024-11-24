@@ -2,13 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/myPublication.css"
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../hostConfig";
 
 
-function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,statusPublication}){
+function CardMyPublication({id,nameProduct,
+    descriptionProduct,priceProduct,
+    conditionProduct,imgPublication,
+    statusPublication,
+    isCloudImage}){
 
     const colorBox = useRef()
     const messageStatus = useRef()
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
 
     if(statusPublication===1){
         colorBox.current = "green-publication"
@@ -20,6 +25,8 @@ function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,condi
         messageStatus.current = "VENDIDA"
     }
 
+    
+
     return (
           <div className="box-card-myPublications">
              <div>
@@ -30,7 +37,7 @@ function CardMyPublication({id,nameProduct,descriptionProduct,priceProduct,condi
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${baseUrl}/images/${imgPublication}`} alt="book-loaded" />
+                    <img src={`${routeImage}/images/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -96,6 +103,7 @@ export function MyPublications(){
                              conditionProduct={item.productResponse.condition}
                              imgPublication={item.productResponse.img}
                              statusPublication={item.status}
+                             isCloudImage={item.productResponse.isCloudImage}
                             >
                             </CardMyPublication>
                             )

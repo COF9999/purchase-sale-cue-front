@@ -6,7 +6,7 @@ import FileUpload from "../components/FileUpload";
 import axios from 'axios';
 import { DialogModal } from "../components/Reutil/ModalAlert";
 import { validateNameProduct } from "./ValidationsProduct";
-import baseUrl from "../../hostConfig";
+import {baseUrl} from "../../hostConfig";
 
 export function CreateProduct(){
     const nameProduct = useRef()

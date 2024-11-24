@@ -7,12 +7,15 @@ import filterSearch from "../../images/filter-search.png"
 import "../css/publications.css"
 import { OverlayFilter } from "./modules/OverlayFilter";
 import { localStorageFunction } from "../js/methodsLocalStorage";
-import baseUrl from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../hostConfig";
 
 
-console.log(baseUrl);
 
-function CardPublications({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication}){
+//  
+function CardPublications({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,isCloudImage}){
+
+    const routeImage = isCloudImage?baseUrlS3:baseUrl
+
     return (
           <div className="box-card-publications">
              <div>
@@ -20,7 +23,7 @@ function CardPublications({id,nameProduct,descriptionProduct,priceProduct,condit
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner">
-                    <img src={`${baseUrl}/images/${imgPublication}`} alt="book-loaded" />
+                     <img src={`${routeImage}/images/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>
@@ -71,7 +74,7 @@ function Overlay({statePopUpGreen,popUpSetStatus}){
                        
                     </div>
                    <div>
-                        <Link to={"/green-page"} className="go-to-green" onClick={changeActiveOverlay}>Ir a pagina a la pagina</Link>
+                        <Link to={"/green-page"} className="go-to-green" onClick={changeActiveOverlay}>Ir a la pagina</Link>
                    </div>
                    <div className="div-close-popUp-green-page">
                         <div>
@@ -172,6 +175,7 @@ export function Publication(){
                                 priceProduct={item.productResponse.price}
                                 conditionProduct={item.productResponse.condition}
                                 imgPublication={item.productResponse.img}
+                                isCloudImage={item.productResponse.isCloudImage}
                                 >
                                 </CardPublications>
                                 )
