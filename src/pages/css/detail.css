@@ -156,6 +156,50 @@
     height: 30vh;
     column-gap: 20px;
 }
+
+
+.div-m-learning{
+    display: flex;
+    flex-direction: column;
+}
+
+.div-match-score{
+    flex: 1;
+    position: relative;
+}
+
+.div-match-score p{
+   height: max-content; 
+   position: absolute;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   top: 0; 
+   margin: auto;
+   text-align: center;
+   font-size: 1.4em;
+}
+
+
+
+.--content-div-icon{
+    width: 150px;
+    height: 150px;
+}
+
+.--content-div-icon img{
+    width: 150px;
+}
+
+ .inner-div-icon-machine-l {
+    height: max-content;
+    text-align: center;
+ }
+
+.inner-div-icon-machine-l img{
+    width: 50px;
+} 
+
 .--content-div-icon{
     cursor: pointer;
     transition: transform, .3s,ease-out .2s;
@@ -165,23 +209,11 @@
     transform: translateY(-2px);
 }
 
-.--content-div-icon img{
-    width: 150px;
-}
 
-
-.div-content-icon-report{
+.inner-div-icon{
     text-align: center;
     width: max-content;
 }
-
-
-.div-content-icon-chapt {
-    text-align: center;
-    width: max-content;
-}
-
-
 
 
 .father-content-chapt{
@@ -213,7 +245,6 @@
     background-color: rgb(255, 255, 255);
     
 }
-
 
 
 .container-chapt{
@@ -310,11 +341,6 @@
 }
 
 
-
-
-
-
-
 .div-btn-send-chap{
     display: flex;
     justify-content: center;
@@ -371,6 +397,8 @@
     border: snow;
     background-color: rgb(231, 231, 225);
     border-radius: 5px;
+    width: 100%;
+    height: 200px;
 }
 
 .div-content-card-report button{

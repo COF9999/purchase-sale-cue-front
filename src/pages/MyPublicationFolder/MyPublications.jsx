@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/myPublication.css"
-import {baseUrl,baseUrlS3} from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../../hostConfig";
 
 
 function CardMyPublication({id,nameProduct,
@@ -13,7 +13,7 @@ function CardMyPublication({id,nameProduct,
 
     const colorBox = useRef()
     const messageStatus = useRef()
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     if(statusPublication===1){
         colorBox.current = "green-publication"
@@ -37,7 +37,7 @@ function CardMyPublication({id,nameProduct,
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${routeImage}/images/${imgPublication}`} alt="book-loaded" />
+                    <img src={`${routeImage}/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>

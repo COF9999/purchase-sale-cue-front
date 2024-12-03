@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"
 import axios from "axios"
 import "../css/filterCompenentOverlay.css"
-import {baseUrl} from "../../../hostConfig";
+import {baseUrl} from "../../../../hostConfig";
 
 export function BannerFilter({partFilter,setAllPublications,setActiveOverlayFilter}){
 

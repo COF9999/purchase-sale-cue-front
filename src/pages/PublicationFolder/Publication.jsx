@@ -7,14 +7,14 @@ import filterSearch from "../../images/filter-search.png"
 import "../css/publications.css"
 import { OverlayFilter } from "./modules/OverlayFilter";
 import { localStorageFunction } from "../js/methodsLocalStorage";
-import {baseUrl,baseUrlS3} from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../../hostConfig";
 
 
 
 //  
 function CardPublications({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,isCloudImage}){
 
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     return (
           <div className="box-card-publications">
@@ -23,7 +23,7 @@ function CardPublications({id,nameProduct,descriptionProduct,priceProduct,condit
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner">
-                     <img src={`${routeImage}/images/${imgPublication}`} alt="book-loaded" />
+                     <img src={`${routeImage}/${imgPublication}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                 <p>Estado {conditionProduct}</p>

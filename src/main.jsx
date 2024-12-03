@@ -94,7 +94,89 @@ const router = createBrowserRouter([
       }
     ]
   }
-]);
+],
+{
+  basename: '/app' // Establece el prefijo de las rutas
+}
+);
+
+
+// const router = createBrowserRouter(
+//   [
+//     {
+//       path: '/',
+//       element: <Login /> // Página principal
+//     },
+//     {
+//       path: '/app/register',
+//       element: <Register />
+//     },
+//     {
+//       path: '/app/green-page',
+//       element: <StaticGreenPage />
+//     },
+//     {
+//       path: '/app',
+//       element: <ProtectedRoute />,
+//       children: [
+//         {
+//           path: 'publications',
+//           element: <ContainerPublication />,
+//           children: [
+//             {
+//               index: true,
+//               element: <Publication />
+//             },
+//             {
+//               path: 'detail/:id',
+//               element: <Detail />
+//             }
+//           ]
+//         },
+//         {
+//           path: 'my-products',
+//           element: <ContainerProduct />,
+//           children: [
+//             {
+//               index: true,
+//               element: <Product />
+//             },
+//             {
+//               path: 'create',
+//               element: <CreateProduct />
+//             }
+//           ]
+//         },
+//         {
+//           path: 'my-publications',
+//           element: <ContainerMyPublications />,
+//           children: [
+//             {
+//               index: true,
+//               element: <MyPublications />
+//             },
+//             {
+//               path: 'detail/:id',
+//               element: <DetailMyPublications />
+//             }
+//           ]
+//         },
+//         {
+//           path: 'my-profile',
+//           element: <Profile />
+//         },
+//         {
+//           path: 'offer',
+//           element: <Offer />
+//         },
+//         {
+//           path: 'transacciones',
+//           element: <Transaction />
+//         }
+//       ]
+//     }
+//   ]
+// );
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

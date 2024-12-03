@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios"
 import "../css/offer.css"
 import { localStorageFunction } from "../js/methodsLocalStorage.js";
-import {baseUrl,baseUrlS3} from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../../hostConfig";
 
 
 function CounterOffer({idCounterOffer,description,status,setIdCounterRef}){
@@ -70,7 +70,8 @@ function UserHasStarEventOffer({idOffer,idCounterOffer}){
         try{
             const response = await axios.post(`${baseUrl}/counter-offer/acept-counter-offer`,body)
             if(response.status === 200){
-                console.log(response.data); 
+                console.log(response.data);
+                alert("Oferta aceptada")
             }else{
                 console.log("BAD RETURN OFF SERVER");
             }
@@ -115,13 +116,12 @@ function UserHasStarEventOffer({idOffer,idCounterOffer}){
             
             alert(e.response.data.message)
         }
-        window.alert("Nada ARREGLANDO");
     }
 
     return(
         <div className="div-btn-counterOffer-select">
             <div>
-                <button disabled onClick={aceptCounterOffer}>Aceptar</button>
+                <button onClick={aceptCounterOffer}>Aceptar</button>
             </div>
             <div>
                 <button onClick={denyCounterOffer}>Rechazar</button>
@@ -141,7 +141,7 @@ function CardMyOffer({id,nameProductRequired,
     const messageStatus = useRef()
     const [activeCounterOffer,setActiveCounterOffer] = useState(false)
     const idCounterOffer = useRef("")
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     
 
@@ -179,7 +179,7 @@ function CardMyOffer({id,nameProductRequired,
                     <h2>{nameProductRequired}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${routeImage}/images/${imgProductRequired}`} alt="book-loaded" />
+                    <img src={`${routeImage}/${imgProductRequired}`} alt="book-loaded" />
                 </div>
                 <div className="box-inner">
                     {

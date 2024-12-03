@@ -4,7 +4,7 @@ import "../css/myPublicationDetail.css"
 import axios from "axios"
 import imgBook from "../../images/img-book.jpeg"
 import iconCloseCommet from "../../images/icon-close-512.webp"
-import {baseUrl, baseUrlS3 } from "../../hostConfig"
+import {baseUrl, baseUrlS3 } from "../../../hostConfig"
 
 
 
@@ -72,7 +72,7 @@ function OverlayCounterOffer({activeOverlayCounter,setActiveOverlayCounter,idOff
 
 function ImgDetail({name,price,condition,imgMyDetailMyPublication,isCloudImage}){
 
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     return(
         <>
@@ -81,7 +81,7 @@ function ImgDetail({name,price,condition,imgMyDetailMyPublication,isCloudImage})
                     <div className="box-name-product-myPublication">
                     </div>
                         
-                        <img src={`${routeImage}/images/${imgMyDetailMyPublication}`} alt="#" />
+                        <img src={`${routeImage}/${imgMyDetailMyPublication}`} alt="#" />
                      </div>
                 <div className="box-description-publication">
                     <div>
@@ -111,6 +111,7 @@ function OfferDetail({idSearchProduct}){
                     const response = await axios.get(`${baseUrl}/product/${idSearchProduct}`)
                     if(response.status === 200){
                         console.log(response.data);
+                        
                         setProductContent(response.data)
                     }else{
                         console.log("BAD RETURN OFF SERVER");
@@ -121,9 +122,7 @@ function OfferDetail({idSearchProduct}){
             }
             fetchProducts()
     },[idSearchProduct])
-
-
-    const routeImage = productContent.isCloudImage?baseUrlS3:baseUrl
+   
 
     return(
         <>
@@ -132,7 +131,7 @@ function OfferDetail({idSearchProduct}){
                     productContent!=null
                     ? <div className="box-offer">
                     <div>
-                        <img src={`${routeImage}/images/${productContent.img}`} alt="" className="img-offer-detail"/>
+                        <img src={`${productContent.isCloudImage?baseUrlS3:baseUrl+"/images"}/${productContent.img}`} alt="" className="img-offer-detail"/>
                     </div>
                    
                      </div>
@@ -302,7 +301,7 @@ function InformationDetail({idOffer,nameOwner,
         setStateCounterOfferInfo(!stateCounterOfferInfo)
     }
 
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     return(
         <>
@@ -315,7 +314,7 @@ function InformationDetail({idOffer,nameOwner,
                         {
                             imgBookOfferted!=null
                             ?<div>
-                                <img src={`${routeImage}/images/${imgBookOfferted}`} onClick={selectImg}></img>
+                                <img src={`${routeImage}/${imgBookOfferted}`} onClick={selectImg}></img>
                                 <h2>{`${priceProductOffer} $`}</h2>
                                 <h2>{`Estado : ${condition}`}</h2>
                             </div>

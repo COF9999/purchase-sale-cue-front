@@ -3,12 +3,12 @@ import reportIcon from "../../images/report-icon.png"
 import closeIconReport from "../../images/icon-close-512.webp"
 import iconChat from "../../images/icon-chat.png"
 import { useEffect, useRef, useState, Fragment  } from "react"
-import iconSendChat from "../../images/icon-send-chat.png"
+import mLearningSvg from "../../images/machine-learning.svg"
 import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
-import {baseUrl,baseUrlMicroComment,baseUrlS3} from "../../hostConfig";
+import {baseUrl,baseUrlMicroComment,baseUrlS3} from "../../../hostConfig";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import "./css/chat.css"
@@ -29,7 +29,7 @@ const decodeJWT = ()=>{
 
 function ImgDetail({name,imgDetailPublication,isCloudImage}){
 
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     return(
         <>
@@ -38,7 +38,7 @@ function ImgDetail({name,imgDetailPublication,isCloudImage}){
                     <h2>{name}</h2>
                 </div>
                 <div className="box-image-detail div-img">
-                     <img src={`${routeImage}/images/${imgDetailPublication}`} alt="#" />
+                     <img src={`${routeImage}/${imgDetailPublication}`} alt="#" />
                 </div>
             </div>
         </>
@@ -52,14 +52,14 @@ function OptionProducts({id,name,price,funcOptionSelected,imgProductsOfferted,is
 
     const referenceTitleObserver = useRef()
 
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     return(
         <a href="#" className="opcion" ref={referenceSingleOption} onClick={(e)=>{
             funcOptionSelected(e,referenceSingleOption,referenceTitleObserver)
         }}>
         <div className="contenido-opcion">
-            <img src={`${routeImage}/images/${imgProductsOfferted}`} alt=""/>
+            <img src={`${routeImage}/${imgProductsOfferted}`} alt=""/>
             <div className="textos" >
                 <p className="p-ocult">{id}</p>
                 <h2 className="titulo" ref={referenceTitleObserver}>{name}</h2>
@@ -445,10 +445,8 @@ function BarSendMessage({idUserToken,sendMessage}){
         
         
         
-        sendMessage({
-        message: textCampusRef.current.value,
-        idUser: idUserToken
-        },textCampusRef
+        sendMessage(
+        textCampusRef,idUserToken
         )
     }
 
@@ -467,11 +465,15 @@ function App({setVisualizateContentChap,idPublication,idUserToken}) {
     const [chat,setChat] = useState({})
     const init = useRef(false)
     const [sockJs,setSockJs] = useState(new SockJS(url))
-    const refInputText = useRef()
+    //const refInputText = useRef()
     const scrollableRef = useRef(null);
     
     const initMessages = async ()=>{
-      if(init.current==false){
+        if(init.current){
+            return
+        }  
+     
+        init.current = true
         try{
           const response = await axios.post(`${baseUrlMicroComment}/chat/list/${idPublication}`)
           setChat(response.data)
@@ -480,13 +482,15 @@ function App({setVisualizateContentChap,idPublication,idUserToken}) {
         }catch(e){
           console.log("Error",e);
         }
-      }
+      
     }
 
+   
     const deactiveChap = () =>{
         setVisualizateContentChap(false)
     }
   
+   
     useEffect(()=>{
       initMessages()
       const client = Stomp.over(sockJs);
@@ -502,7 +506,6 @@ function App({setVisualizateContentChap,idPublication,idUserToken}) {
             instanceBefore.commentResponseDto.push(newMessageObj)
             return instanceBefore
           })
-          refInputText.current.value = "";
         },{idPublication: idPublication})
       }, (error)=>{
           console.log("Error Web Socket");
@@ -527,11 +530,16 @@ function App({setVisualizateContentChap,idPublication,idUserToken}) {
     },[chat])
   
   
-    const sendMessage = (messageObj,refInput)=>{
+    const sendMessage = (textCampusRef,idUserToken)=>{
       try{
         if(stompClient.connect){
+            console.log(textCampusRef.current.value);
+            const messageObj = {
+                "message":textCampusRef.current.value,
+                "idUser":idUserToken
+            }
             stompClient.send(`/app/chat/${idPublication}`,{},JSON.stringify(messageObj))
-            refInputText.current = refInput.current
+            textCampusRef.current.value = ""
           }
       }catch(e){
             console.log(e);
@@ -625,14 +633,21 @@ export function Detail(){
                                 onePublication={onePublication}
                             />
                              <div className="container-actions-detail-publication">
-                              
+                                    <div className="div-m-learning --content-div-icon">
+                                        <div className="inner-div-icon-machine-l">
+                                            <img src={mLearningSvg} alt="" />
+                                        </div>
+                                        <div className="div-match-score">
+                                            <p>Ideal: 20.0%</p>
+                                        </div>
+                                    </div>
                                     <div className="div-denunciation --content-div-icon">
-                                        <div className="div-content-icon-report" onClick={launchPopUpDenunciation}>
+                                        <div className="inner-div-icon" onClick={launchPopUpDenunciation}>
                                             <img src={reportIcon} alt="report-icon" />
                                         </div>
                                     </div>
                                     <div className="div-chapt --content-div-icon">
-                                            <div className="div-content-icon-chapt" onClick={activeChapt}>
+                                            <div className="inner-div-icon" onClick={activeChapt}>
                                                 <img src={iconChat} alt="Icon-Chat"/>
                                             </div>
                                     </div>

@@ -2,7 +2,7 @@ import React,{useEffect,useRef,useState} from "react";
 import axios from "axios";
 import "../css/transaction.css"
 import iconCloseCommet from "../../images/icon-close-512.webp"
-import {baseUrl,baseUrlS3} from "../../hostConfig";
+import {baseUrl,baseUrlS3} from "../../../hostConfig";
 
 
 function OverlayComment({idTransactionValue,activeOverlayComment,setActiveOverlayComment}){
@@ -133,7 +133,7 @@ function CardTransaction({id,nameProduct,
     }){
 
     const [activeValoration,setActiveValoration] = useState(false)
-    const routeImage = isCloudImage?baseUrlS3:baseUrl
+    const routeImage = isCloudImage?baseUrlS3:baseUrl+"/images"
 
     const launchValoration = () =>{
         setActiveOverlayComment(true)
@@ -152,7 +152,7 @@ function CardTransaction({id,nameProduct,
                     <h2>{nameProduct}</h2>
                 </div>
                 <div className="box-inner img">
-                    <img src={`${routeImage}/images/${img}`} alt="book-loaded" />
+                    <img src={`${routeImage}/${img}`} alt="book-loaded" />
                 </div>
                 <div className="div-icon-show-valorations" onClick={changeValueActiveValoration}>▼</div>
                 <GroupComments

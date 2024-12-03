@@ -100,12 +100,13 @@
 }
 
 .div-content-commet{
-    background-color: rgb(21, 188, 221);
+    background-color: rgb(30, 30, 227);
     padding: 30px;
     display: flex;
     flex-direction: column;
     row-gap: 20px;
     position: relative;
+    border-radius: 10px;
 }
 
 .div-close-popUp-comment{
@@ -118,6 +119,7 @@
 .div-content-commet .normal-div{
     text-align: center;
     width: 100%;
+    color: white;
 }
 
 .div-content-commet textarea{

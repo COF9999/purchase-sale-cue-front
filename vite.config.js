@@ -1,14 +1,54 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react-swc'
+import os from 'os';
+import dotenv from 'dotenv';
+// export default defineConfig({
+//   plugins: [react()],
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
+//   optimizeDeps: {
+//     exclude: ['@swc/wasm'], // Marcar la ruta problemática como externa
+//   },
+// })
+dotenv.config();
 
-  optimizeDeps: {
-    exclude: ['@swc/wasm'], // Marcar la ruta problemática como externa
-  },
-})
+
+// Detecta la dirección IP local de la máquina
+const getLocalIPAddress = () => {
+  const interfaces = os.networkInterfaces();
+  for (const name of Object.keys(interfaces)) {
+    for (const iface of interfaces[name] || []) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        return iface.address; // Retorna la IP local
+      }
+    }
+  }
+  return 'localhost'; // Si no se detecta una IP, usa localhost
+};
+
+const hostReact = getLocalIPAddress();
+
+const replacePlugin = (mode) => {
+  return {
+    name: "html-inject-env",
+    transformIndexHtml: (html) => {
+      if (mode === "production") {
+        return html.replace(
+          "<!-- REACT_ENV -->",
+          '<script src="./config/env.js"></script>'
+        );
+      }
+      return null;
+    },
+  };
+};
+
+
+export default defineConfig(({mode})=>({
+  plugins: [react(),replacePlugin(mode)],
+  server:{
+    host: process.env.VITE_REACT_HOST || hostReact
+  }
+}))
 
 
 // // vite.config.js
