@@ -8,10 +8,11 @@ import axios from "axios"
 import "../css/detail.css"
 import "../css/selectBox.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
-import {baseUrl,baseUrlMicroComment,baseUrlS3} from "../../../hostConfig";
+import {baseUrl,baseUrlMicroComment,baseUrlS3,baseUrlMachineLearningPublication} from "../../../hostConfig";
 import SockJS from 'sockjs-client';
 import Stomp from 'stompjs';
 import "./css/chat.css"
+import * as Comlink from 'comlink';
 
 const decodeJWT = ()=>{
     const token = localStorageFunction()
@@ -583,23 +584,60 @@ export function Detail(){
     const [visualizationOverlay,setVisualizationOverlay] = useState(null)
     const [visualizateContentChap,setVisualizateContentChap] = useState(false)
     const idUserToken = decodeJWT().sub
+    const [matchIdealProduct,setMatchIdealProduct] = useState("")
+    const [error, setError] = useState(null);
 
-    useEffect(()=>{
-        const fetchProducts = async () =>{
-            try{
-                const response = await axios.get(`${baseUrl}/publication/${id}`)
-                if(response.status === 200){
-                   
-                    setOnePublication(response.data)
-                }else{
-                    console.log("BAD RETURN OFF SERVER");
-                }
-            }catch(e){
-                console.log("Internal Server Error");
+    const getValueMatchMachineL = async (publication) => {
+        const product = publication.productResponse;
+        const body = {
+            id: String(idUserToken),
+            category: product.category,
+            price: product.price,
+            condition: product.condition,
+        };
+
+        const fetchWorkerMachinePub = new Worker(new URL('./scripts/fetchWorker.js', import.meta.url), { type: 'module' });
+
+        fetchWorkerMachinePub.postMessage({
+            baseUrlMachineLearningPublication,
+            body,
+        });
+
+        fetchWorkerMachinePub.onmessage = (event) => {
+            const { success, result, error } = event.data;
+            if (success) {
+                setMatchIdealProduct(result.match)
+            } else {
+                console.log('Error:', error);
             }
-        }
-        fetchProducts()
-    },[])
+            fetchWorkerMachinePub.terminate();
+        };
+
+        fetchWorkerMachinePub.onerror = (e) => {
+            console.error('Error en el Web Worker:', e.message);
+            fetchWorkerMachinePub.terminate();
+        };
+    };
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get(`${baseUrl}/publication/${id}`);
+                if (response.status === 200) {
+                    setOnePublication(response.data);
+                    getValueMatchMachineL(response.data);
+                } else {
+                    console.log('BAD RETURN FROM SERVER');
+                }
+            } catch (e) {
+                console.log('Internal Server Error');
+                setError('Internal Server Error');
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
 
     const launchPopUpDenunciation = () =>{
         setVisualizationOverlay(true)
@@ -637,9 +675,13 @@ export function Detail(){
                                         <div className="inner-div-icon-machine-l">
                                             <img src={mLearningSvg} alt="" />
                                         </div>
-                                        <div className="div-match-score">
-                                            <p>Ideal: 20.0%</p>
-                                        </div>
+                                        {
+                                            matchIdealProduct===""
+                                            ?null
+                                            :   <div className="div-match-score">
+                                                         <p>{"Ideal: "+matchIdealProduct+"%"}</p>
+                                                 </div> 
+                                        }
                                     </div>
                                     <div className="div-denunciation --content-div-icon">
                                         <div className="inner-div-icon" onClick={launchPopUpDenunciation}>

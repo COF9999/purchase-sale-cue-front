@@ -11,6 +11,7 @@ import {baseUrl,baseUrlS3} from "../../../hostConfig";
 
 
 
+
 //  
 function CardPublications({id,nameProduct,descriptionProduct,priceProduct,conditionProduct,imgPublication,isCloudImage}){
 
@@ -183,6 +184,7 @@ export function Publication(){
                     }
                     </div>
                 </div>
+               
             
             </div>
             <OverlayFilter

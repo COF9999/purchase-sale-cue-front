@@ -79,7 +79,7 @@ export const Login = () => {
       }
     } catch (error) {
       // Si hay un error de red o cualquier otro error, muestra un mensaje de error
-      alert('Error del servidor'+error);
+      alert('Error al inicar sesion'+error);
       console.error(error);
     }
   };

@@ -38,6 +38,17 @@
     transition: .3s ease;
 }
 
+.div-support-publication{
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.div-support-publication:hover{
+    filter: drop-shadow(2px 2px 2px #8d8d8d);
+    transform: translateY(-1px);
+}
+
 .card-denunciations:hover{
     transform: translateY(-3px);
 }

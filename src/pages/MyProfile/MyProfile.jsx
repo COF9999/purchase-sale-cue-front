@@ -3,6 +3,7 @@ import axios from "axios"
 import "../css/denunciation.css"
 import { localStorageFunction } from "../js/methodsLocalStorage"
 import {baseUrl} from "../../../hostConfig";
+import supportSvg from"../../images/support.svg"
 
 function Denunciations({userDenunciator,message}){
     return(
@@ -38,6 +39,7 @@ export function Profile(){
         2:["30 cupones de bienestar"],
         3:["90 cupones de bienestar"]
     })
+    const urlLamdbaSupport = useRef(import.meta.env.VITE_LAMBDA_SUPPORT)
 
     useEffect(()=>{
         const fetchContentInfoProfile = async () =>{
@@ -61,7 +63,6 @@ export function Profile(){
 
         }
 
-        
         const fetchContentDenunciations = async () =>{
             
             const body ={
@@ -100,6 +101,12 @@ export function Profile(){
         }
     }
 
+    const redirectToLamddaSupport = ()=>{
+
+    }
+
+    const enviroment = window.env?.VITE_ENVIRONMENT || import.meta.env.VITE_ENVIRONMENT
+
     return(
         <div className="container-principal-my-profile">
 
@@ -130,6 +137,12 @@ export function Profile(){
                   })
                 }
                 </div>
+                <div className="div-support-publication">
+                    <a href={enviroment=="LOCAL"?urlLamdbaSupport.current:"/lambda-support"} target="_blank">
+                        <img src={supportSvg} alt="" onClick={redirectToLamddaSupport} />
+                    </a>
+                   
+            </div>
                
         </div>
     )

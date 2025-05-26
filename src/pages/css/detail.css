@@ -161,6 +161,7 @@
 .div-m-learning{
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .div-match-score{
@@ -197,7 +198,7 @@
  }
 
 .inner-div-icon-machine-l img{
-    width: 50px;
+    width: 70px;
 } 
 
 .--content-div-icon{
